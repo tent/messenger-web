@@ -2,6 +2,7 @@
 //= require ./config
 //= require_tree ./routers
 //= require_tree ./views
+//= require_tree ./models
 
 (function () {
 
@@ -12,6 +13,7 @@
 	Marbles.Utils.extend(Messenger, Marbles.Events, {
 		Routers: {},
 		Views: {},
+		Models: {},
 
 		run: function () {
 			if (!Marbles.history || Marbles.history.started) {
