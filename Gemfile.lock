@@ -1,0 +1,201 @@
+GIT
+  remote: git://github.com/cupcake/boiler-web.git
+  revision: d11b6339e93089fafef3da55f34295dde4c1dc4a
+  branch: master
+  specs:
+    cupcake-boiler-web (0.0.1)
+      coffee-script
+      icing
+      marbles-js
+      marbles-tent-client-js
+      mimetype-fu
+      omniauth-tent
+      rack-putty
+      raven-js
+      react-jsx-sprockets
+      sass
+      sprockets (~> 2.0)
+      tent-client
+      tilt (~> 1.4.0)
+      yajl-ruby
+
+GIT
+  remote: git://github.com/jvaill/sprockets.git
+  revision: 6327a13e77609991509c8cf3d3c1e571f6a4b23d
+  branch: master
+  specs:
+    sprockets (2.9.2)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+
+GIT
+  remote: git://github.com/jvatic/lodash-assets.git
+  revision: 34bfb392e2407053d6cf28f76c884c6e77df34e8
+  branch: master
+  specs:
+    lodash-assets (0.0.1)
+      execjs (>= 1.2.9)
+      sprockets (>= 2.0.3)
+      tilt (>= 1.3.3)
+      yajl-ruby
+
+GIT
+  remote: git://github.com/jvatic/marbles-js.git
+  revision: 197365d85086ac4355609c0ed568eee6c36e67ce
+  branch: redesign
+  specs:
+    marbles-js (0.0.3)
+
+GIT
+  remote: git://github.com/jvatic/raven-js-sprockets.git
+  revision: 4e8688e498d56fccf6ae58f44cda7f9812c1ad9a
+  branch: master
+  specs:
+    raven-js (0.0.3)
+
+GIT
+  remote: git://github.com/jvatic/react-jsx-sprockets.git
+  revision: 7ea77c58eb05a3573bd9c03f7149b1101cdf20fe
+  branch: master
+  specs:
+    react-jsx-sprockets (0.0.2)
+      execjs (>= 1.2.9)
+      sprockets (>= 2.0.3)
+      tilt (>= 1.3.3)
+      yajl-ruby
+
+GIT
+  remote: git://github.com/tent/hawk-ruby.git
+  revision: ad6be56282aa77870db36313bdc38f0e139cd78e
+  branch: master
+  specs:
+    hawk-auth (0.2.4)
+
+GIT
+  remote: git://github.com/tent/icing.git
+  revision: a5e0ba48ffd943d25ac66d148d8e0f95105d7267
+  branch: master
+  specs:
+    icing (0.0.1)
+      compass (~> 0.12.2)
+      sass
+      sprockets (~> 2.0)
+      sprockets-helpers (~> 0.2)
+      sprockets-sass (~> 0.5)
+
+GIT
+  remote: git://github.com/tent/marbles-tent-client-js.git
+  revision: c6c26eeddb4824b306f6901efc3eaa21f4562f76
+  branch: redesign
+  specs:
+    marbles-tent-client-js (0.0.1)
+
+GIT
+  remote: git://github.com/tent/omniauth-tent.git
+  revision: 4143813b2b8848acc2c289a28c2f2d1ef7a28c4a
+  branch: master
+  specs:
+    omniauth-tent (0.2.1)
+      omniauth (~> 1.1.1)
+      tent-client
+
+GIT
+  remote: git://github.com/tent/rack-putty.git
+  revision: ebb5a62dc895ce0b73fa6cd3dda330226f42beb9
+  branch: master
+  specs:
+    rack-putty (0.0.1)
+      rack-mount (~> 0.8.3)
+
+GIT
+  remote: git://github.com/tent/tent-client-ruby.git
+  revision: 1f9259f84d6602ca5739abebb9b11b734c3192f4
+  branch: master
+  specs:
+    tent-client (0.2.1)
+      faraday (= 0.8.4)
+      faraday_middleware (= 0.8.8)
+      faraday_middleware-multi_json
+      hawk-auth
+      nokogiri
+      yajl-ruby
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    chunky_png (1.2.9)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.6.3)
+    compass (0.12.2)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+    execjs (2.0.2)
+    faraday (0.8.4)
+      multipart-post (~> 1.1)
+    faraday_middleware (0.8.8)
+      faraday (>= 0.7.4, < 0.9)
+    faraday_middleware-multi_json (0.0.5)
+      faraday_middleware
+      multi_json
+    fssm (0.2.10)
+    hashie (2.0.5)
+    hike (1.2.3)
+    json (1.8.1)
+    mime-types (2.0)
+    mimetype-fu (0.1.2)
+    mini_portile (0.5.2)
+    multi_json (1.8.4)
+    multipart-post (1.2.0)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
+    omniauth (1.1.4)
+      hashie (>= 1.2, < 3)
+      rack
+    puma (2.7.1)
+      rack (>= 1.1, < 2.0)
+    rack (1.5.2)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
+    rainpress (1.0)
+    rake (10.1.1)
+    sass (3.2.13)
+    sprockets-helpers (0.9.1)
+      sprockets (~> 2.0)
+    sprockets-rainpress (0.0.1)
+      rainpress
+      sprockets
+    sprockets-sass (0.9.1)
+      sprockets (~> 2.0)
+      tilt (~> 1.1)
+    tilt (1.4.1)
+    uglifier (2.4.0)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
+    yajl-ruby (1.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  cupcake-boiler-web!
+  hawk-auth!
+  icing!
+  lodash-assets!
+  marbles-js!
+  marbles-tent-client-js!
+  mime-types
+  omniauth-tent!
+  puma
+  rack-putty!
+  rake
+  raven-js!
+  react-jsx-sprockets!
+  sprockets (~> 2.0)!
+  sprockets-rainpress
+  tent-client!
+  uglifier
