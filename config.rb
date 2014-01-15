@@ -32,7 +32,7 @@ module Messenger
       :layouts => {
         :messenger => '/'
       },
-      :global_nav_config_path => File.join(project_root, 'global_nav.json'),
+      :global_nav_config_path => File.join(project_root, 'global_nav.json.erb'),
       :nav_config_path => File.join(project_root, 'nav.json'),
       :db_path => File.join(project_root, 'db')
     }
