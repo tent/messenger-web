@@ -13,6 +13,22 @@
 
 		converse: function (params) {
 			this.resetScrollPosition.call(this);
+
+			var message;
+			function setMessage() {
+				message = Messenger.Models.Message.findOrInit({
+					id: 'new',
+					entity: Messenger.current_entity
+				});
+			}
+			setMessage();
+
+			React.renderComponent(
+				Messenger.Views.Converse({
+					message: message
+				}),
+				Messenger.config.container_el
+			);
 		}
 	});
 

@@ -46,4 +46,8 @@
 	}
 	Boiler.on('config:ready', Messenger.handleBoilerConfigChange);
 
+	Boiler.on('change:current_entity', function () {
+		Messenger.current_entity = Boiler.current_entity;
+	});
+
 })();
