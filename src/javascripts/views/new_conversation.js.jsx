@@ -47,6 +47,19 @@
 			});
 		},
 
+		getRecipients: function () {
+			var recipients = [];
+			var mentions = this.props.conversation.mentions || [];
+			for (var i = 0, _len = mentions.length; i < _len; i++) {
+				recipients.push(mentions[i].entity);
+			}
+			return recipients.join(', ');
+		},
+
+		getBody: function () {
+			return this.props.conversation.get('newMessage.content.text');
+		},
+
 		clearAlert: function () {
 			this.setState({ alert: null });
 		},
@@ -67,10 +80,10 @@
 
 					<label>
 						To:<br/>
-						<input ref='recipients' className='bb' type='text' placeholder='https://example.com, https://example.org, ...' onChange={this.handleChangeRecipients} />
+						<input ref='recipients' className='bb' type='text' placeholder='https://example.com, https://example.org, ...' onChange={this.handleChangeRecipients} defaultValue={this.getRecipients()} />
 					</label>
 
-					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} />
+					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} defaultValue={this.getBody()} />
 
 					<div className='clearfix'>
 						<button type='submit' className='btn btn-primary pull-right'>Send</button>
