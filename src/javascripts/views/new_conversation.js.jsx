@@ -6,11 +6,14 @@
 		displayName: 'Messenger.Views.NewConversation',
 
 		getInitialState: function () {
-			return {};
+			return {
+				submitting: false
+			};
 		},
 
 		handleSubmit: function (e) {
 			e.preventDefault();
+			this.setState({ submitting: true });
 			this.props.conversation.save({
 				success: this.handleSubmitSuccess,
 				failure: this.handleSubmitFailure
@@ -32,7 +35,8 @@
 				alert: {
 					type: 'success',
 					text: 'Message sent'
-				}
+				},
+				submitting: false
 			});
 			this.props.handleSubmitSuccess(res, xhr);
 		},
@@ -43,7 +47,8 @@
 				alert: {
 					type: 'danger',
 					text: msg
-				}
+				},
+				submitting: false
 			});
 		},
 
@@ -86,7 +91,7 @@
 					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} defaultValue={this.getBody()} />
 
 					<div className='clearfix'>
-						<button type='submit' className='btn btn-primary pull-right'>Send</button>
+						<button type='submit' disabled={this.state.submitting} className='btn btn-primary pull-right'>{this.state.submitting ? 'Sending' : 'Send'}</button>
 					</div>
 				</form>
 			);
