@@ -50,4 +50,8 @@
 		Messenger.current_entity = Boiler.current_entity;
 	});
 
+	Boiler.on('change:client', function () {
+		Messenger.client = Boiler.client;
+	});
+
 })();
