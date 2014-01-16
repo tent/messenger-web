@@ -8,27 +8,23 @@
 		mixins: [Boiler.Routers.Mixins],
 
 		routes: [
-			{ path : "" , handler: "converse"  },
+			{ path : ""                  , handler: "root"             } ,
+			{ path : "conversations/new" , handler: "newConversation"  } ,
+			{ path : "conversations"     , handler: "conversations"    }
 		],
 
-		converse: function (params) {
+		root: function () {
+			this.navigate('conversations/new', { replace: true });
+		},
+
+		newConversation: function (params) {
 			this.resetScrollPosition.call(this);
 
-			var message;
-			function setMessage() {
-				message = Messenger.Models.Message.findOrInit({
-					id: 'new',
-					entity: Messenger.current_entity
-				});
-			}
-			setMessage();
 
-			React.renderComponent(
-				Messenger.Views.Converse({
-					message: message
-				}),
-				Messenger.config.container_el
-			);
+		},
+
+		conversations: function (params) {
+			this.resetScrollPosition.call(this);
 		}
 	});
 
