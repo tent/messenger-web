@@ -20,7 +20,26 @@
 		newConversation: function (params) {
 			this.resetScrollPosition.call(this);
 
+			var conversation;
+			function setConversation() {
+				conversation = Messenger.Models.Conversation.findOrInit({
+					id: 'new',
+					entity: Messenger.current_entity
+				});
+			}
+			setConversation();
 
+			var handleSubmitSuccess = function (res, xhr) {
+				this.navigate('conversations');
+			}.bind(this);
+
+			React.renderComponent(
+				Messenger.Views.NewConversation({
+					conversation: conversation,
+					handleSubmitSuccess: handleSubmitSuccess
+				}),
+				Messenger.config.container_el
+			);
 		},
 
 		conversations: function (params) {

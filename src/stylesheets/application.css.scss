@@ -1,0 +1,15 @@
+.message-form {
+	input[type='text'], textarea {
+		width: 100%;
+	}
+
+	input[type='text'] {
+		height: 2em;
+	}
+}
+
+.bb {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
