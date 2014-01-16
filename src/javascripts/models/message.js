@@ -12,12 +12,24 @@
 		},
 
 		initConversation: function (conversation) {
+			this.conversationCID = conversation.cid;
+
 			if (conversation.id === 'new') {
-				conversation.once('change:id', function () {
-					this.refs = [{ post: conversation.id }];
-					this.mentions = [{ post: conversation.id }].concat(conversation.mentions);
-				}, this);
+				conversation.once('change:id', this.handleChangeConversationID, this);
 			}
+
+			conversation.on('change:mentions', this.handleChangeConversationMentions, this);
+		},
+
+		handleChangeConversationID: function () {
+			var conversation = Messenger.Models.Conversation.find({ cid: this.conversationCID });
+			this.refs = [{ post: conversation.id }];
+			this.mentions = [{ post: conversation.id }].concat(conversation.mentions);
+		},
+
+		handleChangeConversationMentions: function () {
+			var conversation = Messenger.Models.Conversation.find({ cid: this.conversationCID });
+			this.mentions = [{ post: conversation.id }].concat(conversation.mentions);
 		},
 
 		save: function (options) {

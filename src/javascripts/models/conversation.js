@@ -7,12 +7,22 @@
 
 		cidMappingScope: ['id', 'entity'],
 
-		willInitialize: function () {
-			this.newMessage = null;
-		},
-
 		didInitialize: function () {
 			this.set('type', this.type || Messenger.config.POST_TYPES.CONVERSATION);
+			this.initNewMessage();
+		},
+
+		initNewMessage: function (entity) {
+			this.newMessage = Messenger.Models.Message.findOrInit({
+				id: 'new',
+				entity: this.entity
+			});
+			this.newMessage.initConversation(this);
+
+			this.shouldSaveNewMessage = false;
+			this.newMessage.once('change:content.text', function () {
+				this.shouldSaveNewMessage = true;
+			}, this);
 		},
 
 		setRecipients: function (entities) {
@@ -25,31 +35,11 @@
 			this.set('mentions', mentions);
 		},
 
-		setNewMessage: function (attrs) {
-			attrs = Marbles.Utils.extend({
-				id: 'new',
-				entity: this.entity,
-				mentions: [{
-					post: this.id
-				}].concat(this.mentions || []),
-				refs: [{
-					post: this.id
-				}]
-			}, attrs);
-			var message = Messenger.Models.Message.findOrInit(attrs, {fetch: false});
-			message.initConversation(this);
-			this.newMessage = message;
-			return message;
-		},
-
 		saveNewMessage: function (options) {
-			if (this.newMessage) {
-				this.newMessage.mentions = [{ post: this.id }].concat(this.mentions || []);
-				this.newMessage.refs = [{ post: this.id }];
-
+			if (this.shouldSaveNewMessage) {
 				this.newMessage.save({
 					success: function (res, xhr) {
-						this.newMessage = null;
+						this.initNewMessage();
 						options.success(res, xhr);
 					}.bind(this),
 
@@ -62,6 +52,9 @@
 					}
 				});
 				return;
+			} else {
+				options.success();
+				options.complete();
 			}
 		},
 

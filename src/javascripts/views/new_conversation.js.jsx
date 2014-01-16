@@ -11,22 +11,20 @@
 
 		handleSubmit: function (e) {
 			e.preventDefault();
-
-			var conversation = this.props.conversation;
-			var messageBody = this.refs.body.getDOMNode().value;
-			var recipients = this.refs.recipients.getDOMNode().value;
-
-			conversation.setRecipients(recipients.split(/\s*,\s*/));
-			conversation.setNewMessage({
-				content: {
-					text: messageBody
-				}
-			});
-
-			conversation.save({
+			this.props.conversation.save({
 				success: this.handleSubmitSuccess,
 				failure: this.handleSubmitFailure
 			});
+		},
+
+		handleChangeRecipients: function () {
+			var recipients = this.refs.recipients.getDOMNode().value;
+			this.props.conversation.setRecipients(recipients.split(/\s*,\s*/));
+		},
+
+		handleChangeBody: function () {
+			var messageBody = this.refs.body.getDOMNode().value;
+			this.props.conversation.newMessage.set('content.text', messageBody);
 		},
 
 		handleSubmitSuccess: function (res, xhr) {
@@ -69,10 +67,10 @@
 
 					<label>
 						To:<br/>
-						<input ref='recipients' className='bb' type='text' placeholder='https://example.com, https://example.org, ...' />
+						<input ref='recipients' className='bb' type='text' placeholder='https://example.com, https://example.org, ...' onChange={this.handleChangeRecipients} />
 					</label>
 
-					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' />
+					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} />
 
 					<div className='clearfix'>
 						<button type='submit' className='btn btn-primary pull-right'>Send</button>
