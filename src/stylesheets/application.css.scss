@@ -10,20 +10,24 @@
 	}
 }
 
-.conversations {
+.conversations, .conversation {
 	> li {
 		display: block;
 		padding: 1em;
 		border-bottom: 1px solid $gray;
-		cursor: pointer;
-
-		&:hover {
-			background-color: $gray;
-		}
 
 		.timestamp {
 			color: $dark_gray;
 			margin-left: 0.5em;
+		}
+	}
+}
+
+.conversations {
+	> li {
+		cursor: pointer;
+		&:hover {
+			background-color: $gray;
 		}
 	}
 }

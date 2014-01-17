@@ -64,7 +64,7 @@ Messenger.Views.Conversation = React.createClass({
 		}
 
 		return (
-			<ul className='unstyled'>
+			<ul className='unstyled conversation'>
 				{items}
 			</ul>
 		);
