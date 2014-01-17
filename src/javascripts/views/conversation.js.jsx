@@ -51,6 +51,7 @@ Messenger.Views.Conversation = React.createClass({
 		}
 
 		var Message = Messenger.Views.Message;
+		var NewMessageForm = Messenger.Views.NewMessageForm;
 
 		var items = [];
 		var messages = this.state.messages;
@@ -64,9 +65,13 @@ Messenger.Views.Conversation = React.createClass({
 		}
 
 		return (
-			<ul className='unstyled conversation'>
-				{items}
-			</ul>
+			<div>
+				<NewMessageForm conversation={this.props.conversation} />
+
+				<ul className='unstyled conversation'>
+					{items}
+				</ul>
+			</div>
 		);
 	}
 });
