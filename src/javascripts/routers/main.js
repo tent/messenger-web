@@ -45,13 +45,6 @@
 		conversations: function (params) {
 			this.resetScrollPosition.call(this);
 
-			var messages = Messenger.Collections.Messages.findOrInit({
-				params: {
-					types: [Messenger.config.POST_TYPES.MESSAGE],
-					max_refs: 1
-				}
-			});
-
 			var conversations = Messenger.Collections.Conversations.findOrInit({
 				params: {
 					types: [Messenger.config.POST_TYPES.CONVERSATION]
@@ -65,21 +58,26 @@
 				Messenger.config.container_el
 			);
 
-			messages.fetch({
-				callback: {
-					success: function (models, res, xhr) {
-						var message, conversation;
-						for (var i = 0, _len = models.length; i < _len; i++) {
-							message = models[i];
-							conversation = Messenger.Models.Conversation.find({cid: message.conversationCID});
-							if (!conversation) {
-								continue;
-							}
-							conversations.appendModels([conversation]);
+			conversations.on('append prepend reset', function (models) {
+				var conversation;
+				for (var i = 0, _len = models.length; i < _len; i++) {
+					conversation = models[i];
+					conversation.messages.once('change', function () {
+						conversations.trigger('change');
+					});
+					conversation.messages.fetch({
+						params: {
+							limit: 1
 						}
-					}
+					});
 				}
-			});
+			}, this);
+
+			conversations.fetch();
+
+			Marbles.history.once('handler:before', function () {
+				conversations.detach();
+			}, this);
 		}
 	});
 

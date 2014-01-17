@@ -46,12 +46,17 @@ Messenger.Views.Conversations = React.createClass({
 		var TruncatedMessage = Messenger.Views.TruncatedMessage;
 		var items = [];
 		var models = this.state.models;
-		var conversation;
+		var conversation, messageNode;
 		for (var i = 0, _len = models.length; i < _len; i++) {
 			conversation = models[i];
+			if (conversation.messages.first()) {
+				messageNode = <TruncatedMessage message={conversation.messages.first()} />;
+			} else {
+				messageNode = '';
+			}
 			items.push(
 				<li key={conversation.cid}>
-					<TruncatedMessage message={conversation.messages.first()} />
+					{messageNode}
 				</li>
 			);
 		}

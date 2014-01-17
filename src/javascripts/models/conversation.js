@@ -37,6 +37,10 @@
 		},
 
 		initMessages: function () {
+			if (this.messages) {
+				this.messages.detach();
+			}
+
 			this.messages = Messenger.Collections.Messages.findOrInit({
 				params: {
 					types: [Messenger.config.POST_TYPES.MESSAGE],
