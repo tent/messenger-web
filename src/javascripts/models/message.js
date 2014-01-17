@@ -9,6 +9,22 @@
 
 		didInitialize: function () {
 			this.set('type', this.type || Messenger.config.POST_TYPES.MESSAGE);
+
+			this.findLoadedConversation();
+		},
+
+		findLoadedConversation: function () {
+			var _conversationType = Messenger.config.POST_TYPES.CONVERSATION;
+			for (var i = 0, _refs = this.refs || [], _len = _refs.length; i < _len; i++) {
+				conversation = Messenger.Models.Conversation.find({
+					id: _refs[i].post,
+					entity: _refs[i].entity || this.entity
+				}, {fetch:false});
+				if (conversation && conversation.type === _conversationType) {
+					this.initConversation(conversation);
+				}
+				break;
+			}
 		},
 
 		initConversation: function (conversation) {
@@ -19,6 +35,10 @@
 			}
 
 			conversation.on('change:mentions', this.handleChangeConversationMentions, this);
+
+			if (this.id !== 'new') {
+				conversation.messages.appendModels([this]);
+			}
 		},
 
 		handleChangeConversationID: function () {

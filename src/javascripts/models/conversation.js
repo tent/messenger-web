@@ -10,6 +10,17 @@
 		didInitialize: function () {
 			this.set('type', this.type || Messenger.config.POST_TYPES.CONVERSATION);
 			this.initNewMessage();
+			this.initMessages();
+
+			if (this.id === 'new') {
+				this.once('change:id', this.initMessages, this);
+			}
+		},
+
+		detach: function () {
+			this.messages.detach();
+			this.newMessage.detach();
+			this.constructor.__super__.detach.apply(this, arguments);
 		},
 
 		initNewMessage: function (entity) {
@@ -23,6 +34,15 @@
 			this.newMessage.once('change:content.text', function () {
 				this.shouldSaveNewMessage = true;
 			}, this);
+		},
+
+		initMessages: function () {
+			this.messages = Messenger.Collections.Messages.findOrInit({
+				params: {
+					types: [Messenger.config.POST_TYPES.MESSAGE],
+					mentions: this.entity +' '+ this.id
+				}
+			});
 		},
 
 		setRecipients: function (entities) {

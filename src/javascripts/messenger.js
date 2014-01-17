@@ -3,6 +3,7 @@
 //= require_tree ./routers
 //= require_tree ./views
 //= require_tree ./models
+//= require_tree ./collections
 
 (function () {
 
@@ -14,6 +15,7 @@
 		Routers: {},
 		Views: {},
 		Models: {},
+		Collections: {},
 
 		run: function () {
 			if (!Marbles.history || Marbles.history.started) {
