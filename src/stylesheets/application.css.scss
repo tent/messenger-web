@@ -1,3 +1,5 @@
+@import 'icing/common';
+
 .message-form {
 	input[type='text'], textarea {
 		width: 100%;
@@ -5,6 +7,24 @@
 
 	input[type='text'] {
 		height: 2em;
+	}
+}
+
+.conversations {
+	> li {
+		display: block;
+		padding: 1em;
+		border-bottom: 1px solid $gray;
+		cursor: pointer;
+
+		&:hover {
+			background-color: $gray;
+		}
+
+		.timestamp {
+			color: $dark_gray;
+			margin-left: 0.5em;
+		}
 	}
 }
 

@@ -58,7 +58,7 @@ Messenger.Views.Conversations = React.createClass({
 			}
 			items.push(
 				<li key={conversation.cid} className='clearfix'>
-					<div className='pull-right'>
+					<div className='pull-right timestamp'>
 						<small><RelativeTimestamp milliseconds={latestMessage ? latestMessage.published_at : conversation.published_at} /></small>
 					</div>
 
@@ -68,7 +68,7 @@ Messenger.Views.Conversations = React.createClass({
 		}
 
 		return (
-			<ul className='unstyled'>
+			<ul className='unstyled conversations'>
 				{items}
 			</ul>
 		);
