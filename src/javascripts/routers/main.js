@@ -59,12 +59,14 @@
 			);
 
 			conversations.on('append prepend reset', function (models) {
+				function handleConversationsMessagesChange () {
+					conversations.trigger('change');
+				}
+
 				var conversation;
 				for (var i = 0, _len = models.length; i < _len; i++) {
 					conversation = models[i];
-					conversation.messages.once('change', function () {
-						conversations.trigger('change');
-					});
+					conversation.messages.once('change', handleConversationsMessagesChange);
 					conversation.messages.fetch({
 						params: {
 							limit: 1
