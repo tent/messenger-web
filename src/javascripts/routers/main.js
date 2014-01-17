@@ -8,9 +8,10 @@
 		mixins: [Boiler.Routers.Mixins],
 
 		routes: [
-			{ path : ""                  , handler: "root"             } ,
-			{ path : "conversations/new" , handler: "newConversation"  } ,
-			{ path : "conversations"     , handler: "conversations"    }
+			{ path : ""                          , handler: "root"             } ,
+			{ path : "conversations/new"         , handler: "newConversation"  } ,
+			{ path : "conversations"             , handler: "conversations"    } ,
+			{ path : "conversations/:entity/:id" , handler: "conversation"		}
 		],
 
 		root: function () {
@@ -42,6 +43,33 @@
 			);
 		},
 
+		conversation: function (params) {
+			this.resetScrollPosition.call(this);
+
+			var view;
+			var conversation = Messenger.Models.Conversation.findOrFetch({
+				entity: params[0].entity,
+				id: params[0].id
+			}, {
+				callback: {
+					success: function (res, xhr) {
+						conversation.messages.fetch();
+					},
+
+					failure: function (res, xhr) {
+						view.setState({ error: res.error || ('Something went wrong. Error code: '+ xhr.status) });
+					}
+				}
+			});
+
+			view = React.renderComponent(
+				Messenger.Views.Conversation({
+					conversation: conversation
+				}),
+				Messenger.config.container_el
+			);
+		},
+
 		conversations: function (params) {
 			this.resetScrollPosition.call(this);
 
@@ -53,7 +81,10 @@
 
 			React.renderComponent(
 				Messenger.Views.Conversations({
-					conversations: conversations
+					conversations: conversations,
+					openConversation: function (conversation) {
+						Marbles.history.navigate('conversations/'+ encodeURIComponent(conversation.entity) +'/'+ encodeURIComponent(conversation.id));
+					}
 				}),
 				Messenger.config.container_el
 			);

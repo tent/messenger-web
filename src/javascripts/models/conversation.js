@@ -137,6 +137,16 @@
 			}
 		},
 
+		fetch: function (options) {
+			options = Marbles.Utils.extend({}, options || {}, {
+				params: [{
+					entity: this.entity,
+					post: this.id
+				}]
+			});
+			Messenger.client.getPost(options);
+		},
+
 		toJSON: function () {
 			var attrs = {},
 					keys = [
@@ -160,8 +170,38 @@
 		return Conversation.find(attrs, { fetch: false }) || new Conversation(attrs);
 	};
 
-	Conversation.fetch = function (params, options) {
-		console.log("TODO: Fetch conversation", params, options);
+	Conversation.findOrFetch = function (attrs, options) {
+		var c = Conversation.find(attrs, {fetch:false})
+		if (c && options && options.callback) {
+			// defer callback until after fn return
+			setTimeout(function () {
+				var res = {
+					post: c.toJSON()
+				};
+				var xhr = {
+					status: 304
+				};
+				if (typeof options.callback === 'function') {
+					options.callback(res, xhr);
+				} else {
+					if (typeof options.callback.success === 'function') {
+						options.callback.success(res, xhr);
+					}
+					if (typeof options.callback.complete === 'function') {
+						options.callback.complete(res, xhr);
+					}
+				}
+			}, 0);
+		} else {
+			c = Conversation.fetch(attrs, options);
+		}
+		return c;
+	};
+
+	Conversation.fetch = function (attrs, options) {
+		var conversation = new Conversation(attrs);
+		conversation.fetch(options);
+		return conversation;
 	};
 
 	Messenger.Models.Conversation = Conversation;

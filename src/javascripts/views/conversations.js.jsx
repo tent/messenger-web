@@ -44,7 +44,8 @@ Messenger.Views.Conversations = React.createClass({
 
 	render: function () {
 		var TruncatedMessage = Messenger.Views.TruncatedMessage,
-				RelativeTimestamp = Boiler.Views.RelativeTimestamp;
+				RelativeTimestamp = Boiler.Views.RelativeTimestamp,
+				ConversationListItem = Messenger.Views.ConversationListItem;
 		var items = [];
 		var models = this.state.models;
 		var conversation, messageNode, latestMessage;
@@ -57,13 +58,7 @@ Messenger.Views.Conversations = React.createClass({
 				messageNode = '';
 			}
 			items.push(
-				<li key={conversation.cid} className='clearfix'>
-					<div className='pull-right timestamp'>
-						<small><RelativeTimestamp milliseconds={latestMessage ? latestMessage.published_at : conversation.published_at} /></small>
-					</div>
-
-					{messageNode}
-				</li>
+				<ConversationListItem key={conversation.cid} conversation={conversation} openConversation={this.props.openConversation} />
 			);
 		}
 
