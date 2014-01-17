@@ -18,6 +18,8 @@ gem 'tent-client', :git => 'git://github.com/tent/tent-client-ruby.git', :branch
 gem 'hawk-auth', :git => 'git://github.com/tent/hawk-ruby.git', :branch => 'master'
 gem 'omniauth-tent', :git => 'git://github.com/tent/omniauth-tent.git', :branch => 'master'
 
+gem 'therubyracer'
+
 group :development, :assets do
   gem 'mime-types'
   gem 'sprockets-rainpress'
