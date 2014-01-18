@@ -15,8 +15,7 @@ module Messenger
         :write_types => %w(
           https://tent.io/types/conversation/v0
           https://tent.io/types/message/v0
-        ),
-        :scopes => %w( permissions )
+        )
       },
       :assets_dir => File.join(project_root, 'public'),
       :asset_roots => [
