@@ -37,7 +37,12 @@
 			conversation.on('change:mentions', this.handleChangeConversationMentions, this);
 
 			if (this.id !== 'new') {
-				conversation.messages.appendModels([this]);
+				var latest = conversation.messages.first();
+				if (latest && latest.received_at < this.received_at) {
+					conversation.messages.prependModels([this]);
+				} else {
+					conversation.messages.appendModels([this]);
+				}
 			}
 		},
 
