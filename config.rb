@@ -28,9 +28,10 @@ module Messenger
       :layout_roots => [
         File.join(project_root, 'layout')
       ],
-      :layouts => {
-        :messenger => '/*'
-      },
+      :layouts => [{
+        :name => :messenger,
+        :route => '/*'
+      }],
       :global_nav_config_path => File.join(project_root, 'global_nav.json.erb'),
       :nav_config_path => File.join(project_root, 'nav.json'),
       :db_path => File.join(project_root, 'db')
