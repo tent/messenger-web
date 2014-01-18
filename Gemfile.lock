@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/cupcake/boiler-web.git
-  revision: 6e77c3e76a629185de5dd6e4fd15825f35e5a646
+  revision: 404ddd24570bd9322708ac641ced17d2448854b6
   branch: master
   specs:
     cupcake-boiler-web (0.0.1)
