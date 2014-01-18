@@ -12,6 +12,7 @@ Messenger.Views.Conversations = React.createClass({
 
 	componentDidMount: function () {
 		this.bindConversations(this.props.conversations);
+		this.setPullTimeout();
 	},
 
 	componentWillReceiveProps: function (props) {
@@ -23,6 +24,7 @@ Messenger.Views.Conversations = React.createClass({
 
 	componentWillUnmount: function () {
 		this.unbindConversations(this.props.conversations);
+		clearTimeout(this.pullTimeout);
 	},
 
 	bindConversations: function (conversations) {
@@ -43,6 +45,19 @@ Messenger.Views.Conversations = React.createClass({
 		this.setState({
 			models: this.props.conversations.models(),
 			lastPage: !this.props.conversations.pages.next
+		});
+	},
+
+	setPullTimeout: function () {
+		this.pullTimeout = setTimeout(this.loadPrevPage, 5000);
+	},
+
+	loadPrevPage: function () {
+		this.props.conversations.fetchPrev({
+			prepend: true,
+			callback: function (res, xhr) {
+				this.setPullTimeout();
+			}.bind(this)
 		});
 	},
 
