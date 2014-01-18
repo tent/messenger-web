@@ -6,7 +6,8 @@ Messenger.Views.Conversation = React.createClass({
 	getInitialState: function () {
 		return {
 			messages: [],
-			error: null
+			error: null,
+			lastPage: true
 		};
 	},
 
@@ -40,7 +41,17 @@ Messenger.Views.Conversation = React.createClass({
 	},
 
 	handleChangeConversation: function () {
-		this.setState({ messages: this.props.conversation.messages.models() });
+		this.setState({
+			messages: this.props.conversation.messages.models(),
+			lastPage: !this.props.conversation.messages.pages.next
+		});
+	},
+
+	loadNextPage: function () {
+		var res = this.props.conversation.messages.fetchNext({ append: true });
+		if (res === false) {
+			this.setState({ lastPage: true });
+		}
 	},
 
 	render: function () {
@@ -51,7 +62,8 @@ Messenger.Views.Conversation = React.createClass({
 		}
 
 		var Message = Messenger.Views.Message;
-		var NewMessageForm = Messenger.Views.NewMessageForm;
+		var NewMessageForm = Messenger.Views.NewMessageForm,
+				InfiniteScroll = React.addons.InfiniteScroll;
 
 		var items = [];
 		var messages = this.state.messages;
@@ -71,6 +83,12 @@ Messenger.Views.Conversation = React.createClass({
 				<ul className='unstyled conversation'>
 					{items}
 				</ul>
+
+				<InfiniteScroll
+					loadMore={this.loadNextPage}
+					hasMore={!this.state.lastPage}
+					loader={<div>Loading...</div>}
+					threshold={250} />
 			</div>
 		);
 	}
