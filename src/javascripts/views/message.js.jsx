@@ -18,6 +18,7 @@ Messenger.Views.Message = React.createClass({
 						<RelativeTimestamp milliseconds={message.published_at} />
 					</small>
 				</div>
+				<h3>{message.get('entity')}</h3>
 				<p>{message.get('content.text') || ''}</p>
 			</div>
 		);
