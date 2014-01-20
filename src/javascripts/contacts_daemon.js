@@ -206,16 +206,58 @@
 		Contacts.cache.set('manifest', manifest);
 	};
 
+	Contacts.getCachedProfile = function (entity) {
+		return Contacts.cache.get(entity);
+	};
+
 	/*
 	 * public API
 	 */
 
 	// find contact by entity
 	Contacts.find = function (entity, callback) {
+		callback( Contacts.getCachedProfile(entity) );
 	};
 
 	// find contacts with name or entity matching queryString
 	Contacts.search = function (queryString, callback) {
+		var manifest = Contacts.getCacheManifest() || {};
+		var profiles = [];
+		var entity, name, score, profile;
+		for (entity in manifest) {
+			if (!manifest.hasOwnProperty(entity)) {
+				continue;
+			}
+			name = manifest[entity];
+
+			score = (StringScore(entity, queryString) + StringScore(name, queryString)) / 2;
+			if (score === 0) {
+				continue;
+			}
+
+			profile = Contacts.cache.get(entity);
+			if (!profile) {
+				continue;
+			}
+
+			profile.score = score;
+			profiles.push(profile);
+		}
+
+		// sort matched profiles in order of score (high to low)
+		profiles = profiles.sort(function (a, b) {
+			a = a.score;
+			b = b.score;
+			if (a > b) {
+				return -1;
+			}
+			if (a < b) {
+				return 1;
+			}
+			return 0;
+		});
+
+		callback(profiles);
 	};
 
 	Contacts.run();
