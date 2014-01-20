@@ -69,7 +69,7 @@
 			break;
 
 			case "search":
-				Contacts.find.apply(null, event.data.search.concat([callback]));
+				Contacts.search.apply(null, event.data.args.concat([callback]));
 			break;
 
 			case "init":
