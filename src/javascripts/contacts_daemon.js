@@ -49,6 +49,9 @@
 	};
 
 	var Contacts = {};
+	Contacts.displayName = "TentContacts (Daemon)";
+
+	var __syncInterval;
 
 	Contacts.allowedOrigin = /^.*$/; // TODO: make this configurable with an array of hostnames
 
@@ -60,11 +63,14 @@
 	Contacts.init = function () {
 		Contacts.setCredentials.apply(null, arguments);
 		Contacts.cache = new Cache();
+		__syncInterval = setInterval(Contacts.sync, 14400000); // sync every 4 hours
+		Contacts.sync();
 	};
 
 	Contacts.deinit = function () {
 		Contacts.client = null;
 		Contacts.cache = null;
+		clearInterval(__syncInterval);
 	};
 
 	Contacts.receiveMessage = function (event) {
@@ -115,6 +121,89 @@
 
 	// fetch new relationships and cached update names and avatars
 	Contacts.sync = function () {
+		if (!Contacts.client) {
+			throw Error(Contacts.displayName +": Can not sync without Tent client!");
+		}
+
+		var cursor = Contacts.cache.get('cursor');
+		if (cursor && ((Date.now() - cursor.updated_at) > 86400000)) {
+			// refresh everything every 24 hours
+			cursor = null;
+		}
+		if (!cursor) {
+			cursor = {
+				since: 0,
+				updated_at: Date.now()
+			};
+		}
+
+		var handleSuccess = function (res, xhr) {
+			if (!res.posts.length) {
+				// empty response
+				return;
+			}
+
+			// update cursor
+			var latestPost = res.posts[0];
+			cursor = {
+				since: latestPost.received_at +" "+ latestPost.version.id,
+				updated_at: Date.now()
+			};
+			Contacts.cache.set('cursor', cursor);
+
+			// fetch the next page
+			Contacts.fetch({
+				since: cursor.since
+			}, handleSuccess);
+
+			// cache returned profiles
+			var entity, profile, name, avatarDigest;
+			for (entity in res.profiles) {
+				profile = res.profiles[entity];
+				name = profile.name || entity.replace(/^https?:\/\//, '');
+				avatarDigest = profile.avatar_digest;
+				Contacts.cacheProfile(entity, name, avatarDigest);
+			}
+		};
+
+		Contacts.fetch({
+			since: cursor.since
+		}, handleSuccess);
+	};
+
+	Contacts.fetch = function (params, successCallback) {
+		params.types = ["https://tent.io/types/relationship/v0#"];
+		params.profiles = "mentions";
+		Contacts.client.getPostsFeed({
+			params: [params],
+			callback: {
+				success: successCallback,
+				failure: function (res, xhr) {
+					throw Error(Contacts.displayName +": Failed to fetch relationships - "+ xhr.status +": "+ JSON.stringify(res));
+				}
+			}
+		});
+	};
+
+	// returns cached object with entity URIs
+	// as keys and profile names as values
+	// (used for searching).
+	Contacts.getCacheManifest = function () {
+		if (!Contacts.cache) {
+			return null;
+		}
+		return Contacts.cache.get('manifest');
+	};
+
+	Contacts.cacheProfile = function (entity, name, avatarDigest) {
+		Contacts.cache.set(entity, {
+			name: name,
+			avatarDigest: avatarDigest
+		});
+
+		var manifest = Contacts.getCacheManifest() || {};
+		manifest[entity] = name;
+		Contacts.cache.set('manifest', manifest);
 	};
 
 	/*
