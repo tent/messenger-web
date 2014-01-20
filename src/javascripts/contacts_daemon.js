@@ -58,4 +58,6 @@
 	Contacts.search = function (queryString, callback) {
 	};
 
+	Contacts.run();
+
 })();
