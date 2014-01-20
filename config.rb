@@ -24,17 +24,26 @@ module Messenger
       :asset_names => %w(
         application.css
         application.js
+        tent-client.js
+        contacts_daemon.js
       ),
       :layout_roots => [
         File.join(project_root, 'layout')
       ],
       :layouts => [{
+        :name => :contacts_daemon,
+        :route => '/contacts-daemon'
+      }, {
         :name => :messenger,
         :route => '/*'
       }],
       :global_nav_config_path => File.join(project_root, 'global_nav.json.erb'),
       :nav_config_path => File.join(project_root, 'nav.json'),
-      :db_path => File.join(project_root, 'db')
+      :db_path => File.join(project_root, 'db'),
+
+      :js_config => {
+        :CONTACTS_URL => ENV['CONTACTS_URL']
+      }
     }
   end
 end
