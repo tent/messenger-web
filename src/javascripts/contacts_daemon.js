@@ -9,6 +9,14 @@
 		window.addEventListener("message", Contacts.receiveMessage, false);
 	};
 
+	Contacts.init = function () {
+		Contacts.setCredentials.apply(null, arguments);
+	};
+
+	Contacts.deinit = function () {
+		Contacts.client = null;
+	};
+
 	Contacts.receiveMessage = function (event) {
 		if (!Contacts.allowedOrigin.test(event.origin)) {
 			return; // ignore everything from "un-trusted" hosts
@@ -37,12 +45,13 @@
 			break;
 
 			case "init":
-				Contacts.setCredentials.apply(null, event.data.args);
+				Contacts.init.apply(null, event.data.args || []);
 				callback();
 			break;
 
-			case "stop":
-				Contacts.client = null;
+			case "deinit":
+				Contacts.deinit.apply(null, event.data.args || []);
+				callback();
 			break;
 		}
 	};

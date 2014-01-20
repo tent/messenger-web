@@ -61,9 +61,9 @@
 		Contacts.sendQueue = [];
 		Contacts.ready = false;
 		Contacts.deliverMessage({
-			name: 'stop',
-			id: 'stop',
-			callback: Contacts.daemonStopped
+			name: 'deinit',
+			id: 'deinit',
+			callback: null
 		});
 	};
 
@@ -75,9 +75,6 @@
 			Contacts.deliverMessage(_ref[i]);
 		}
 		Contacts.sendQueue = [];
-	};
-
-	Contacts.daemonStopped = function () {
 	};
 
 	Contacts.sendMessage = function (name, args, callback, thisArg) {
@@ -128,6 +125,11 @@
 
 		var thisArg = Contacts.__callbackBindings[event.data.id];
 		delete Contacts.__callbackBindings[event.data.id];
+
+		if (typeof callback === null) {
+			// Allow callback to be explicitly omitted
+			return;
+		}
 
 		if (typeof callback !== 'function') {
 			throw Error(Contacts.displayName +".receiveMessage: Invalid callback: "+ JSON.stringify(callback) +" for event: "+ JSON.stringify(event.data));
