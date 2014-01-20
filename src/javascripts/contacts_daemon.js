@@ -22,7 +22,7 @@
 
 		var callback = function (res) {
 			event.source.postMessage({
-				id: event.data.key,
+				id: event.data.id,
 				res: res
 			}, event.origin);
 		};
