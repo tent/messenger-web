@@ -143,7 +143,7 @@
 	};
 
 	Contacts.search = function (queryString, callback, thisArg) {
-		Contacts.sendMessage('search', [entity], callback, thisArg);
+		Contacts.sendMessage('search', [queryString], callback, thisArg);
 	};
 
 })();
