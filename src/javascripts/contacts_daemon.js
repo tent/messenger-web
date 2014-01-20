@@ -36,10 +36,22 @@
 				Contacts.find.apply(null, event.data.search.concat([callback]));
 			break;
 
-			case "ping":
+			case "init":
+				Contacts.setCredentials.apply(null, event.data.args);
 				callback();
 			break;
+
+			case "stop":
+				Contacts.client = null;
+			break;
 		}
+	};
+
+	Contacts.setCredentials = function (entity, serverMetaPost, credentials) {
+		Contacts.client = new TentClient(entity, {
+			serverMetaPost: serverMetaPost,
+			credentials: credentials
+		});
 	};
 
 	// fetch new relationships and cached update names and avatars

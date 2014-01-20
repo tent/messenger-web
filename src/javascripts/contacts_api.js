@@ -28,12 +28,13 @@
 		window.addEventListener("message", Contacts.receiveMessage, false);
 
 		function sendPing() {
-			var pingData = {
-				name: 'ping',
-				id: 'ping',
+			var initData = {
+				name: 'init',
+				id: 'init',
+				args: [Contacts.entity, Contacts.serverMetaPost, Contacts.credentials],
 				callback: Contacts.daemonReady
 			};
-			Contacts.deliverMessage(pingData);
+			Contacts.deliverMessage(initData);
 		}
 
 		var iframe = document.createElement('iframe');
@@ -52,7 +53,18 @@
 		Contacts.iframe = iframe;
 
 		iframe.addEventListener("load", sendPing, false);
-		sendPing();
+	};
+
+	Contacts.stop = function () {
+		Contacts.credentials = null;
+		Contacts.entity = null;
+		Contacts.sendQueue = [];
+		Contacts.ready = false;
+		Contacts.deliverMessage({
+			name: 'stop',
+			id: 'stop',
+			callback: Contacts.daemonStopped
+		});
 	};
 
 	Contacts.daemonReady = function () {
@@ -63,6 +75,9 @@
 			Contacts.deliverMessage(_ref[i]);
 		}
 		Contacts.sendQueue = [];
+	};
+
+	Contacts.daemonStopped = function () {
 	};
 
 	Contacts.sendMessage = function (name, args, callback, thisArg) {
