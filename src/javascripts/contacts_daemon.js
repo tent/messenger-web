@@ -26,6 +26,28 @@
 		window.localStorage.removeItem(this.expandKey(key));
 	};
 
+	// Simple scoring algorithm
+	StringScore = function (str, abbr) {
+		str = str.toLowerCase();
+		abbr = abbr.toLowerCase();
+
+		if (str === abbr) {
+			return 1;
+		}
+
+		var index = str.indexOf(abbr);
+
+		if (index === -1) {
+			return 0;
+		}
+
+		if (index === 0) {
+			return 1;
+		}
+
+		return abbr.length / str.length;
+	};
+
 	var Contacts = {};
 
 	Contacts.allowedOrigin = /^.*$/; // TODO: make this configurable with an array of hostnames
