@@ -1,5 +1,31 @@
 (function () {
 
+	// Simple localStorage abstration
+	var Cache = function () {
+		this.namespace = 'c';
+	};
+	Cache.prototype.expandKey = function (key) {
+		return this.namespace +':'+ key;
+	};
+	Cache.prototype.set = function (key, val) {
+		if (!window.localStorage) {
+			return;
+		}
+		window.localStorage.setItem(this.expandKey(key), JSON.stringify(val));
+	};
+	Cache.prototype.get = function (key) {
+		if (!window.localStorage) {
+			return null;
+		}
+		return JSON.parse(window.localStorage.getItem(this.expandKey(key)));
+	};
+	Cache.prototype.remove = function (key) {
+		if (!window.localStorage) {
+			return;
+		}
+		window.localStorage.removeItem(this.expandKey(key));
+	};
+
 	var Contacts = {};
 
 	Contacts.allowedOrigin = /^.*$/; // TODO: make this configurable with an array of hostnames
@@ -11,10 +37,12 @@
 
 	Contacts.init = function () {
 		Contacts.setCredentials.apply(null, arguments);
+		Contacts.cache = new Cache();
 	};
 
 	Contacts.deinit = function () {
 		Contacts.client = null;
+		Contacts.cache = null;
 	};
 
 	Contacts.receiveMessage = function (event) {
