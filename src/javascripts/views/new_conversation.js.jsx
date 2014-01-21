@@ -20,9 +20,8 @@
 			});
 		},
 
-		handleChangeRecipients: function () {
-			var recipients = this.refs.recipients.getDOMNode().value;
-			this.props.conversation.setRecipients(recipients.split(/\s*,\s*/));
+		handleChangeContactSelection: function (entities) {
+			this.props.conversation.setRecipients(entities);
 		},
 
 		handleChangeBody: function () {
@@ -58,7 +57,7 @@
 			for (var i = 0, _len = mentions.length; i < _len; i++) {
 				recipients.push(mentions[i].entity);
 			}
-			return recipients.join(', ');
+			return recipients;
 		},
 
 		getBody: function () {
@@ -70,6 +69,8 @@
 		},
 
 		render: function () {
+			var ContactSelector = Messenger.Views.ContactSelector;
+
 			var alertNode = '';
 			if (this.state.alert) {
 				alertNode = (
@@ -85,7 +86,7 @@
 
 					<label>
 						To:<br/>
-						<input ref='recipients' className='bb' type='text' placeholder='https://example.com, https://example.org, ...' onChange={this.handleChangeRecipients} defaultValue={this.getRecipients()} />
+						<ContactSelector handleChangeSelection={this.handleChangeContactSelection} selectedEntities={this.getRecipients()} />
 					</label>
 
 					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} defaultValue={this.getBody()} />
