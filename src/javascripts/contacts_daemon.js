@@ -216,7 +216,12 @@
 
 	// find contact by entity
 	Contacts.find = function (entity, callback) {
-		callback( Contacts.getCachedProfile(entity) );
+		var profile = Contacts.getCachedProfile(entity);
+		profile = profile || {
+			name: entity.replace(/https?:\/\//, '')
+		};
+		profile.entity = entity;
+		callback(profile);
 	};
 
 	// find contacts with name or entity matching queryString
@@ -241,6 +246,7 @@
 			}
 
 			profile.score = score;
+			profile.entity = entity;
 			profiles.push(profile);
 		}
 
