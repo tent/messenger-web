@@ -172,7 +172,7 @@
 	};
 
 	Contacts.fetch = function (params, successCallback) {
-		params.types = ["https://tent.io/types/relationship/v0#"];
+		params.types = ["https://tent.io/types/relationship/v0"];
 		params.profiles = "mentions";
 		Contacts.client.getPostsFeed({
 			params: [params],
