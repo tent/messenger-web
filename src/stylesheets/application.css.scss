@@ -37,6 +37,24 @@
 	}
 }
 
+.multiselect-container {
+	.m-input {
+	}
+
+	.m-picker {
+		display: none;
+		&.active {
+			display: block;
+		}
+
+		> li {
+			&.active {
+				background-color: $gray;
+			}
+		}
+	}
+}
+
 .bb {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
