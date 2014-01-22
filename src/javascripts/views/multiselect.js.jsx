@@ -9,6 +9,7 @@
 			return {
 				selectedValues: [],
 				selectedItems: [],
+				selectedIndex: null,
 				selectableItems: [],
 				selectableIndex: 0
 			};
@@ -59,6 +60,20 @@
 			if (e.keyCode === 13) { // Enter / Return
 				e.preventDefault();
 				this.selectActiveItem();
+			}
+
+			if (e.keyCode === 8 && this.refs.input.getDOMNode().selectionStart === 0) { // Backspace
+				if (this.state.selectedIndex !== null) {
+					this.removeAtIndex(this.state.selectedIndex);
+				} else {
+					this.setState({
+						selectedIndex: this.state.selectedItems.length-1
+					});
+				}
+			} else {
+				this.setState({
+					selectedIndex: null
+				});
 			}
 
 			if (this.state.selectableItems.length === 0) {
@@ -143,7 +158,8 @@
 
 			this.setState({
 				selectedItems: items,
-				selectedValues: values
+				selectedValues: values,
+				selectedIndex: null
 			});
 
 			this.handleInputChange();
@@ -161,6 +177,7 @@
 						key={_ref[i].value}
 						value={_ref[i].value}
 						displayText={_ref[i].displayText}
+						active={this.state.selectedIndex === i}
 						index={i}
 						removeItem={this.removeAtIndex} />
 				);
@@ -203,7 +220,7 @@
 
 		render: function () {
 			return (
-				<li title={this.props.value}>
+				<li title={this.props.value} className={this.props.active ? 'active': ''}>
 					{this.props.displayText}
 					<span className='fa fa-times' onClick={this.handleRemoveClick}></span>
 				</li>

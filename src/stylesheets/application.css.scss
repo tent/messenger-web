@@ -39,6 +39,11 @@
 
 .multiselect-container {
 	.m-input {
+		> li {
+			&.active {
+				background-color: $gray;
+			}
+		}
 	}
 
 	.m-picker {
