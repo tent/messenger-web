@@ -138,13 +138,37 @@
 		},
 
 		fetch: function (options) {
-			options = Marbles.Utils.extend({}, options || {}, {
+			var conversation = this;
+			var opts = Marbles.Utils.extend({}, options || {}, {
 				params: [{
 					entity: this.entity,
 					post: this.id
-				}]
+				}],
+				callback: {
+					success: function (res, xhr) {
+						conversation.parseAttributes(res.post);
+
+						if (options.callback) {
+							if (typeof options.callback === 'function') {
+								options.callback(res, xhr);
+							} else if (typeof options.callback.success === 'function') {
+								options.callback.success(res, xhr);
+							}
+						}
+					},
+
+					failure: function (res, xhr) {
+						if (options.callback) {
+							if (typeof options.callback === 'function') {
+								options.callback(res, xhr);
+							} else if (typeof options.callback.failure === 'function') {
+								options.callback.failure(res, xhr);
+							}
+						}
+					}
+				}
 			});
-			Messenger.client.getPost(options);
+			Messenger.client.getPost(opts);
 		},
 
 		toJSON: function () {
