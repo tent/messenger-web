@@ -134,13 +134,35 @@
 			this.props.handleChangeSelection(values);
 		},
 
+		removeAtIndex: function (index) {
+			var items = this.state.selectedItems;
+			items = items.slice(0, index).concat(items.slice(index+1, items.length));
+			var values = items.map(function (item) {
+				return item.value;
+			});
+
+			this.setState({
+				selectedItems: items,
+				selectedValues: values
+			});
+
+			this.handleInputChange();
+
+			this.props.handleChangeSelection(values);
+		},
+
 		render: function () {
 			var selectedItems = [];
 			var selectableItems = [];
 			var i, _ref, _len;
 			for (i = 0, _ref = this.state.selectedItems, _len = _ref.length; i < _len; i++) {
 				selectedItems.push(
-					<SelectedItem key={_ref[i].value} value={_ref[i].value} displayText={_ref[i].displayText} />
+					<SelectedItem
+						key={_ref[i].value}
+						value={_ref[i].value}
+						displayText={_ref[i].displayText}
+						index={i}
+						removeItem={this.removeAtIndex} />
 				);
 			}
 			for (i = 0, _ref = this.state.selectableItems, _len = _ref.length; i < _len; i++) {
@@ -175,10 +197,15 @@
 	var SelectedItem = React.createClass({
 		displayName: 'Marbles.Views.Multiselect SelectedItem',
 
+		handleRemoveClick: function () {
+			this.props.removeItem(this.props.index);
+		},
+
 		render: function () {
 			return (
 				<li title={this.props.value}>
 					{this.props.displayText}
+					<span className='fa fa-times' onClick={this.handleRemoveClick}></span>
 				</li>
 			);
 		}
