@@ -171,7 +171,7 @@
 	};
 
 	Conversation.findOrFetch = function (attrs, options) {
-		var c = Conversation.find(attrs, {fetch:false})
+		var c = Conversation.find(attrs, {fetch:false});
 		if (c && options && options.callback) {
 			// defer callback until after fn return
 			setTimeout(function () {

@@ -103,7 +103,7 @@
 	};
 
 	Contacts.receiveMessage = function (event) {
-		if (!Contacts.daemonURL === event.origin) {
+		if (Contacts.daemonURL.substr(0, event.origin.length) !== event.origin) {
 			return; // ignore everything not from the iframe
 		}
 
