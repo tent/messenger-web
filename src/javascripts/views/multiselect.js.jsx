@@ -127,6 +127,9 @@
 		},
 
 		selectActiveItem: function () {
+			if (this.state.selectableItems.length === 0) {
+				return;
+			}
 			this.selectAtIndex(this.state.selectableIndex);
 		},
 
