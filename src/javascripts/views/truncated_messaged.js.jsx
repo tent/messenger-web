@@ -17,10 +17,9 @@ Messenger.Views.TruncatedMessage = React.createClass({
 
 	render: function () {
 		return (
-			<div>
-				<h3>{this.props.message.entity}</h3>
+			<p>
 				{this.truncatedMessageText()}
-			</div>
+			</p>
 		);
 	}
 });
