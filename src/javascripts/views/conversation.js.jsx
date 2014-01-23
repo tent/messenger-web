@@ -78,7 +78,8 @@ Messenger.Views.Conversation = React.createClass({
 
 		var Message = Messenger.Views.Message;
 		var NewMessageForm = Messenger.Views.NewMessageForm,
-				InfiniteScroll = React.addons.InfiniteScroll;
+				InfiniteScroll = React.addons.InfiniteScroll,
+				ConversationParticipants = Messenger.Views.ConversationParticipants;
 
 		var items = [];
 		var messages = this.state.messages;
@@ -93,6 +94,8 @@ Messenger.Views.Conversation = React.createClass({
 
 		return (
 			<div>
+				<ConversationParticipants conversation={this.props.conversation} />
+
 				<NewMessageForm conversation={this.props.conversation} />
 
 				<ul className='unstyled conversation'>
