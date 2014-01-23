@@ -1,6 +1,5 @@
 {
   "items": [
-    { "name": "New" , "path": "conversations/new" , "iconClassName": "fa fa-plus" } ,
-    { "name": "All" , "path": "conversations"     , "iconClassName": "fa fa-list" }
+    { "name": "All" , "path": "conversations" , "iconClassName": "fa fa-list" }
   ]
 }

@@ -13,6 +13,7 @@ Messenger.Views.Conversations = React.createClass({
 	componentDidMount: function () {
 		this.bindConversations(this.props.conversations);
 		this.setPullTimeout();
+		this.setNewConversation();
 	},
 
 	componentWillReceiveProps: function (props) {
@@ -25,6 +26,7 @@ Messenger.Views.Conversations = React.createClass({
 	componentWillUnmount: function () {
 		this.unbindConversations(this.props.conversations);
 		clearTimeout(this.pullTimeout);
+		this.state.newConversation.detach();
 	},
 
 	bindConversations: function (conversations) {
@@ -68,11 +70,25 @@ Messenger.Views.Conversations = React.createClass({
 		}
 	},
 
+	handleNewConversationCreated: function () {
+		this.setNewConversation();
+	},
+
+	setNewConversation: function () {
+		this.setState({
+			newConversation: Messenger.Models.Conversation.findOrInit({
+				id: 'new',
+				entity: Messenger.current_entity
+			})
+		});
+	},
+
 	render: function () {
 		var TruncatedMessage = Messenger.Views.TruncatedMessage,
 				RelativeTimestamp = Boiler.Views.RelativeTimestamp,
 				ConversationListItem = Messenger.Views.ConversationListItem,
-				InfiniteScroll = React.addons.InfiniteScroll;
+				InfiniteScroll = React.addons.InfiniteScroll
+				NewConversation = Messenger.Views.NewConversation;
 		var items = [];
 		var models = this.state.models;
 		var conversation, messageNode, latestMessage;
@@ -89,8 +105,20 @@ Messenger.Views.Conversations = React.createClass({
 			);
 		}
 
+		newConversation = '';
+		if (this.state.newConversation) {
+			newConversation = (
+				<NewConversation
+					key={this.state.newConversation.cid}
+					conversation={this.state.newConversation}
+					handleSubmitSuccess={this.handleNewConversationCreated} />
+			);
+		}
+
 		return (
 			<div>
+				{newConversation}
+
 				<ul className='unstyled conversations'>
 					{items}
 				</ul>

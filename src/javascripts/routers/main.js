@@ -9,38 +9,12 @@
 
 		routes: [
 			{ path : ""                          , handler: "root"             } ,
-			{ path : "conversations/new"         , handler: "newConversation"  } ,
 			{ path : "conversations"             , handler: "conversations"    } ,
 			{ path : "conversations/:entity/:id" , handler: "conversation"		}
 		],
 
 		root: function () {
-			this.navigate('conversations/new', { replace: true });
-		},
-
-		newConversation: function (params) {
-			this.resetScrollPosition.call(this);
-
-			var conversation;
-			function setConversation() {
-				conversation = Messenger.Models.Conversation.findOrInit({
-					id: 'new',
-					entity: Messenger.current_entity
-				});
-			}
-			setConversation();
-
-			var handleSubmitSuccess = function (res, xhr) {
-				this.navigate('conversations');
-			}.bind(this);
-
-			React.renderComponent(
-				Messenger.Views.NewConversation({
-					conversation: conversation,
-					handleSubmitSuccess: handleSubmitSuccess
-				}),
-				Messenger.config.container_el
-			);
+			this.navigate('conversations', { replace: true });
 		},
 
 		conversation: function (params) {
