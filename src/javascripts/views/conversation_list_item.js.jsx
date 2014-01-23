@@ -9,9 +9,10 @@ Messenger.Views.ConversationListItem = React.createClass({
 
 	render: function () {
 		var TruncatedMessage = Messenger.Views.TruncatedMessage,
-				RelativeTimestamp = Boiler.Views.RelativeTimestamp
+				RelativeTimestamp = Boiler.Views.RelativeTimestamp,
 				ContactName = Messenger.Views.ContactName,
-				ContactAvatar = Messenger.Views.ContactAvatar;
+				ContactAvatar = Messenger.Views.ContactAvatar,
+				ConversationParticipants = Messenger.Views.ConversationParticipants;
 
 		var conversation = this.props.conversation;
 		var latestMessage = conversation.messages.first();
@@ -39,12 +40,6 @@ Messenger.Views.ConversationListItem = React.createClass({
 		}
 		entities = entities.slice(0, 4);
 
-		var avatarNode = (
-			<span key={entities[0]} className='pull-left avatar-container'>
-				<ContactAvatar entity={entities[0]} className='avatar-medium' />
-			</span>
-		);
-
 		var numOthersText = '';
 		if (numEntities > 1) {
 			numOthersText = <span> and {numEntities-1} {numEntities-1 === 1 ? ' other' : ' others'}</span>;
@@ -52,7 +47,8 @@ Messenger.Views.ConversationListItem = React.createClass({
 
 		return (
 			<li key={conversation.cid} className='clearfix' onClick={this.handleClick}>
-				{avatarNode}
+				<ConversationParticipants conversation={conversation} />
+
 				<div className='pull-right timestamp'>
 					<small><RelativeTimestamp milliseconds={(latestMessage ? latestMessage.published_at : conversation.published_at)} /></small>
 				</div>
