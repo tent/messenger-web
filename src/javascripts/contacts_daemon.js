@@ -68,6 +68,18 @@
 	};
 
 	Contacts.deinit = function () {
+		Contacts.cache.remove('cursor');
+
+		var manifest = Contacts.getCacheManifest() || {};
+		Contacts.cache.remove('manifest');
+
+		for (var entity in manifest) {
+			if (!manifest.hasOwnProperty(entity)) {
+				continue;
+			}
+			Contacts.cache.remove(entity);
+		}
+
 		Contacts.client = null;
 		Contacts.cache = null;
 		clearInterval(__syncInterval);

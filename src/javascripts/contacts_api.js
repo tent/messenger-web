@@ -55,7 +55,7 @@
 		iframe.addEventListener("load", sendPing, false);
 	};
 
-	Contacts.stop = function () {
+	Contacts.stop = function (callback) {
 		Contacts.credentials = null;
 		Contacts.entity = null;
 		Contacts.sendQueue = [];
@@ -63,7 +63,7 @@
 		Contacts.deliverMessage({
 			name: 'deinit',
 			id: 'deinit',
-			callback: null
+			callback: callback
 		});
 	};
 

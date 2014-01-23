@@ -10,9 +10,13 @@ Boiler.on('change:authenticated', function (authenticated) {
 		TentContacts.credentials = Messenger.config.credentials;
 		TentContacts.run();
 	} else {
-		TentContacts.stop();
+		TentContacts.stop(null);
 	}
 });
+
+Boiler.signoutHandler = function () {
+	TentContacts.stop(Boiler.performSignoutRedirect);
+};
 
 Boiler.once('config:ready', Messenger.run, Messenger, { args: false });
 Boiler.fetchConfig();
