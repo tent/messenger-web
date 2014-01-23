@@ -14,6 +14,11 @@ Messenger.Views.ConversationParticipants = React.createClass({
 			return entity && entity !== conversation.entity;
 		});
 
+		var selfIndex = entities.indexOf(Messenger.current_entity);
+		if (selfIndex !== -1) {
+			entities = entities.slice(0, selfIndex).concat(entities.slice(selfIndex+1, entities.length));
+		}
+
 		var participants = entities.map(function (entity) {
 			return (
 				<li key={entity}>
