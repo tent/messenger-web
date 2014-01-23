@@ -46,14 +46,17 @@
 			}
 
 			var component = this;
-			this.props.itemFuzzyLookup(value, function (matchedItems) {
-				matchedItems = matchedItems.filter(function (item) {
-					return component.state.selectedValues.indexOf(item.value) === -1;
+			clearTimeout(this.__lookupTimeout);
+			this.__lookupTimeout = setTimeout(function () {
+				component.props.itemFuzzyLookup(value, function (matchedItems) {
+					matchedItems = matchedItems.filter(function (item) {
+						return component.state.selectedValues.indexOf(item.value) === -1;
+					});
+					component.setState({
+						selectableItems: matchedItems
+					});
 				});
-				component.setState({
-					selectableItems: matchedItems
-				});
-			});
+			}, 50);
 		},
 
 		handleInputKeyDown: function (e) {
