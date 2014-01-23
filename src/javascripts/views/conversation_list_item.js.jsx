@@ -30,10 +30,12 @@ Messenger.Views.ConversationListItem = React.createClass({
 		}
 
 		var entities = (conversation.mentions || []).slice(0, 4).map(function (mention) {
-			return mention.entity;
-		}).filter(function (entity) {
-			return entity && entity !== conversation.entity;
+			return mention.entity || conversation.entity;
 		});
+
+		if (entities.indexOf(conversation.entity) === -1) {
+			entities.unshift(conversation.entity);
+		}
 
 		var selfIndex = entities.indexOf(Messenger.current_entity);
 		if (selfIndex !== -1) {
