@@ -56,9 +56,20 @@ Messenger.Views.ConversationListItem = React.createClass({
 			</span>);
 		}
 
+		var participants = '';
+		if (entities.length === 1) {
+			participants = (
+				<span className='pull-left avatar-container'>
+					<ContactAvatar entity={entities[0]} className='avatar-medium' />
+				</span>
+			);
+		} else {
+			participants = <ConversationParticipants conversation={conversation} />;
+		}
+
 		return (
 			<li key={conversation.cid} className='clearfix' onClick={this.handleClick}>
-				<ConversationParticipants conversation={conversation} />
+				{participants}
 
 				<div className='pull-right timestamp'>
 					<small><RelativeTimestamp milliseconds={(latestMessage ? latestMessage.published_at : conversation.published_at)} /></small>
