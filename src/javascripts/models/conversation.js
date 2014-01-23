@@ -29,11 +29,6 @@
 				entity: this.entity
 			});
 			this.newMessage.initConversation(this);
-
-			this.shouldSaveNewMessage = false;
-			this.newMessage.once('change:content.text', function () {
-				this.shouldSaveNewMessage = true;
-			}, this);
 		},
 
 		initMessages: function () {
@@ -153,6 +148,10 @@
 		validate: function () {
 			if (!this.mentions || this.mentions.length === 0) {
 				return "Conversation must have participants.";
+			}
+
+			if (this.shouldSaveNewMessage) {
+				return this.newMessage.validate();
 			}
 
 			return null;

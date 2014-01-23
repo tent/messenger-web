@@ -14,6 +14,7 @@
 		handleSubmit: function (e) {
 			e.preventDefault();
 			this.setState({ submitting: true });
+			this.props.conversation.shouldSaveNewMessage = true;
 			this.props.conversation.save({
 				success: this.handleSubmitSuccess,
 				failure: this.handleSubmitFailure
