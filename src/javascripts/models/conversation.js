@@ -83,6 +83,19 @@
 		},
 
 		save: function (options) {
+			var err = this.validate();
+			if (err) {
+				var res = { error: err };
+				var xhr = { status: 400 };
+				if (typeof options.failure === 'function') {
+					options.failure(res, xhr);
+				}
+				if (typeof options.complete === 'function') {
+					options.complete(res, xhr);
+				}
+				return;
+			}
+
 			var data = this.toJSON();
 			var callback = {
 				success: function (res, xhr) {
@@ -135,6 +148,14 @@
 					callback: callback
 				});
 			}
+		},
+
+		validate: function () {
+			if (!this.mentions || this.mentions.length === 0) {
+				return "Conversation must have participants.";
+			}
+
+			return null;
 		},
 
 		fetch: function (options) {
