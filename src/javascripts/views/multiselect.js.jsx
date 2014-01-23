@@ -209,14 +209,14 @@
 			}
 			return (
 				<div className='multiselect-container'>
-					<ul className='m-input'>
+					<ul className='unstyled m-input'>
 						{selectedItems}
-						<li className='cursor'>
+						<li className='input'>
 							<input ref='input' type='text' onChange={this.handleInputChange} onKeyDown={this.handleInputKeyDown} />
 						</li>
 					</ul>
 
-					<ul className={'m-picker'+ (selectableItems.length ? ' active' : '')}>
+					<ul className={'unstyled'+ (' m-picker'+ (selectableItems.length ? ' active' : ''))}>
 						{selectableItems}
 					</ul>
 				</div>
@@ -240,8 +240,8 @@
 			return (
 				<li title={this.props.value} className={this.props.active ? 'active': ''}>
 					{displayImage}
-					{this.props.displayText}
-					<span className='fa fa-times' onClick={this.handleRemoveClick}></span>
+					<span className='text'>{this.props.displayText}</span>
+					<span className='fa fa-times remove' onClick={this.handleRemoveClick}></span>
 				</li>
 			);
 		}
@@ -272,8 +272,8 @@
 			return (
 				<li className={this.props.active ? 'active' : ''} onMouseEnter={this.handleMouseEnter} onClick={this.handleClick}>
 					{displayImage}
-					{this.props.displayText}
-					{displayValue}
+					<span className='text'>{this.props.displayText}</span>
+					<span className='value'>{displayValue}</span>
 				</li>
 			);
 		}
