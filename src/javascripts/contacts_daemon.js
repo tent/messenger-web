@@ -53,6 +53,9 @@
 
 	var __syncInterval;
 
+	var __listeners = {};
+	var __listenersMapping = {};
+
 	Contacts.allowedOrigin = /^.*$/; // TODO: make this configurable with an array of hostnames
 
 	// listen to postMessage
@@ -110,6 +113,14 @@
 
 			case "search":
 				Contacts.search.apply(null, event.data.args.concat([callback]));
+			break;
+
+			case "onChange":
+				Contacts.onChange.apply(null, event.data.args.concat([callback]));
+			break;
+
+			case "offChange":
+				Contacts.offChange.apply(null, event.data.args.concat([callback]));
 			break;
 
 			case "init":
@@ -208,18 +219,46 @@
 	};
 
 	Contacts.cacheProfile = function (entity, name, avatarDigest) {
-		Contacts.cache.set(entity, {
+		var profile = Contacts.cache.get(entity);
+		var newProfile = {
 			name: name,
 			avatarDigest: avatarDigest
-		});
+		};
+		Contacts.cache.set(entity, newProfile);
 
 		var manifest = Contacts.getCacheManifest() || {};
 		manifest[entity] = name;
 		Contacts.cache.set('manifest', manifest);
+
+		if (!profile || (profile.name !== newProfile.name && profile.avatarDigest !== newProfile.avatarDigest)) {
+			Contacts.profileChanged(entity, newProfile, profile);
+		}
 	};
 
 	Contacts.getCachedProfile = function (entity) {
 		return Contacts.cache.get(entity);
+	};
+
+	Contacts.profileChanged = function (entity, newProfile, oldProfile) {
+		if (!__listeners[entity]) {
+			return;
+		}
+
+		if (newProfile) {
+			newProfile.entity = entity;
+		}
+
+		if (oldProfile) {
+			oldProfile.entity = entity;
+		}
+
+		var _ref = __listeners[entity];
+		for (var eventID in _ref) {
+			if (!_ref.hasOwnProperty(eventID)) {
+				continue;
+			}
+			_ref[eventID](newProfile, oldProfile);
+		}
 	};
 
 	/*
@@ -276,6 +315,22 @@
 		});
 
 		callback(profiles);
+	};
+
+	Contacts.onChange = function (eventID, entity, callback) {
+		__listeners[entity] = __listeners[entity] || {};
+		__listeners[entity][eventID] = callback;
+		__listenersMapping[eventID] = entity;
+	};
+
+	Contacts.offChange = function (eventID, callback) {
+		var entity = __listenersMapping[eventID];
+		delete __listenersMapping[eventID];
+		__listeners[entity] = __listeners[entity] || {};
+		delete __listeners[entity][eventID];
+		if (Object.keys(__listeners[entity]).length === 0) {
+			delete __listeners[entity];
+		}
 	};
 
 	Contacts.run();

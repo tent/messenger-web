@@ -12,6 +12,8 @@
 	Contacts.__callbacks = {};
 	Contacts.__callbackBindings = {};
 
+	Contacts.__listeners = {};
+
 	// list of requests created before daemon activated.
 	Contacts.sendQueue = [];
 
@@ -144,6 +146,38 @@
 
 	Contacts.search = function (queryString, callback, thisArg) {
 		Contacts.sendMessage('search', [queryString], callback, thisArg);
+	};
+
+	Contacts.onChange = function (entity, callback, thisArg) {
+		listeners = Contacts.__listeners;
+		listeners[entity] = listeners[entity] || [];
+
+		var id = null;
+		var _ref = listeners[entity];
+		if (typeof _ref.__id_counter !== 'number') {
+			_ref.__id_counter = 0;
+		}
+		for (var i = 0, _len = _ref.length; i < _len; i++) {
+			if (_ref[i].callback === callback && _ref[i].thisArg === thisArg) {
+				id = _ref[i].id;
+				break;
+			}
+		}
+		if (id === null) {
+			id = _ref.__id_counter++;
+			_ref.push({
+				id: id,
+				callback: callback,
+				thisArg: thisArg
+			});
+		}
+
+		Contacts.sendMessage('onChange', [id, entity], callback, thisArg);
+		return id;
+	};
+
+	Contacts.offChange = function (id, callback, thisArg) {
+		Contacts.sendMessage('offChange', [id], callback || null, thisArg);
 	};
 
 })();
