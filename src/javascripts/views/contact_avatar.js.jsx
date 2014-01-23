@@ -6,6 +6,7 @@ Messenger.Views.ContactAvatar = React.createClass({
 	getInitialState: function () {
 		return {
 			entity: null,
+			name: null,
 			avatarURL: null
 		};
 	},
@@ -13,6 +14,7 @@ Messenger.Views.ContactAvatar = React.createClass({
 	componentWillMount: function () {
 		this.setState({
 			entity: this.props.entity,
+			name: null,
 			avatarURL: null
 		});
 
@@ -29,6 +31,7 @@ Messenger.Views.ContactAvatar = React.createClass({
 			}
 			component.setState({
 				entity: profile.entity,
+				name: profile.name,
 				avatarURL: avatarURL
 			});
 		});
@@ -40,7 +43,7 @@ Messenger.Views.ContactAvatar = React.createClass({
 		}
 
 		return (
-			<img title={this.state.entity} src={this.state.avatarURL} className='avatar-medium' />
+			<img title={this.state.name +' - '+ this.state.entity} src={this.state.avatarURL} className='avatar-medium' />
 		);
 	}
 });
