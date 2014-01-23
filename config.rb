@@ -42,7 +42,8 @@ module Messenger
       :db_path => File.join(project_root, 'db'),
 
       :js_config => {
-        :CONTACTS_URL => ENV['CONTACTS_URL']
+        :CONTACTS_URL => ENV['CONTACTS_URL'],
+        :SIGIL_API_ROOT => ENV['SIGIL_API_ROOT']
       }
     }
   end

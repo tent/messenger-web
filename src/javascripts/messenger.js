@@ -16,6 +16,20 @@
 		Views: {},
 		Models: {},
 		Collections: {},
+		Helpers: {
+			sigilURL: function (str, params) {
+				if (!Messenger.config.SIGIL_API_ROOT) {
+					return null;
+				}
+
+				if (!params) {
+					params = {};
+				}
+
+				var queryStr = Marbles.History.prototype.serializeParams([params]);
+				return (Messenger.config.SIGIL_API_ROOT + '/').replace(/\/\/$/, '/') + encodeURIComponent(str) + queryStr;
+			}
+		},
 
 		run: function () {
 			if (!Marbles.history || Marbles.history.started) {

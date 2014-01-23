@@ -25,8 +25,7 @@ Messenger.Views.ContactAvatar = React.createClass({
 					digest: profile.avatarDigest
 				}]);
 			} else {
-				avatarURL = null;
-				// TODO add sigil support
+				avatarURL = Messenger.Helpers.sigilURL(profile.entity, { w: 60 });
 			}
 			component.setState({
 				entity: profile.entity,
