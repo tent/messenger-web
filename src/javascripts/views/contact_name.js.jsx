@@ -16,12 +16,18 @@ Messenger.Views.ContactName = React.createClass({
 			name: this.props.entity.replace(/^https?:\/\//, '')
 		});
 
-		var component = this;
-		TentContacts.find(this.props.entity, function (profile) {
-			component.setState({
-				entity: profile.entity,
-				name: profile.name
-			});
+		TentContacts.find(this.props.entity, this.handleProfileChange);
+		this.__listenerID = TentContacts.onChange(this.props.entity, this.handleProfileChange);
+	},
+
+	componentWillUnmount: function () {
+		TentContacts.offChange(this.__listenerID);
+	},
+
+	handleProfileChange: function (profile) {
+		this.setState({
+			entity: profile.entity,
+			name: profile.name
 		});
 	},
 

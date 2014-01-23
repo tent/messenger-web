@@ -19,21 +19,28 @@ Messenger.Views.ContactAvatar = React.createClass({
 		});
 
 		var component = this;
-		TentContacts.find(this.props.entity, function (profile) {
-			var avatarURL;
-			if (profile.avatarDigest) {
-				avatarURL = Messenger.client.getNamedURL('attachment', [{
-					entity: profile.entity,
-					digest: profile.avatarDigest
-				}]);
-			} else {
-				avatarURL = Messenger.Helpers.sigilURL(profile.entity, { w: 60 });
-			}
-			component.setState({
+		TentContacts.find(this.props.entity, this.handleProfileChange);
+		this.__listenerID = TentContacts.onChange(this.props.entity, this.handleProfileChange);
+	},
+
+	componentWillUnmount: function () {
+		TentContacts.offChange(this.__listenerID);
+	},
+
+	handleProfileChange: function (profile) {
+		var avatarURL;
+		if (profile.avatarDigest) {
+			avatarURL = Messenger.client.getNamedURL('attachment', [{
 				entity: profile.entity,
-				name: profile.name,
-				avatarURL: avatarURL
-			});
+				digest: profile.avatarDigest
+			}]);
+		} else {
+			avatarURL = Messenger.Helpers.sigilURL(profile.entity, { w: 60 });
+		}
+		this.setState({
+			entity: profile.entity,
+			name: profile.name,
+			avatarURL: avatarURL
 		});
 	},
 
