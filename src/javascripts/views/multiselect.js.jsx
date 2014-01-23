@@ -142,6 +142,9 @@
 			var values = items.map(function (item) {
 				return item.value;
 			});
+
+			this.refs.input.getDOMNode().value = '';
+
 			this.setState({
 				selectedItems: items,
 				selectedValues: values,
