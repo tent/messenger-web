@@ -180,6 +180,7 @@
 						key={_ref[i].value}
 						value={_ref[i].value}
 						displayText={_ref[i].displayText}
+						displayImageURL={_ref[i].displayImageURL}
 						active={this.state.selectedIndex === i}
 						index={i}
 						removeItem={this.removeAtIndex} />
@@ -191,6 +192,7 @@
 						key={_ref[i].value}
 						value={_ref[i].value}
 						displayText={_ref[i].displayText}
+						displayImageURL={_ref[i].displayImageURL}
 						active={this.state.selectableIndex === i}
 						index={i}
 						setActive={this.setSelectableIndex}
@@ -222,8 +224,14 @@
 		},
 
 		render: function () {
+			var displayImage = '';
+			if (this.props.displayImageURL) {
+				displayImage = <img src={this.props.displayImageURL} />;
+			}
+
 			return (
 				<li title={this.props.value} className={this.props.active ? 'active': ''}>
+					{displayImage}
 					{this.props.displayText}
 					<span className='fa fa-times' onClick={this.handleRemoveClick}></span>
 				</li>
@@ -247,8 +255,15 @@
 			if (this.props.value !== this.props.displayText) {
 				displayValue = <small>{this.props.value}</small>;
 			}
+
+			var displayImage = '';
+			if (this.props.displayImageURL) {
+				displayImage = <img src={this.props.displayImageURL} />;
+			}
+
 			return (
 				<li className={this.props.active ? 'active' : ''} onMouseEnter={this.handleMouseEnter} onClick={this.handleClick}>
+					{displayImage}
 					{this.props.displayText}
 					{displayValue}
 				</li>
