@@ -43,7 +43,7 @@ Messenger.Views.ContactAvatar = React.createClass({
 		}
 
 		return (
-			<img title={this.state.name +' - '+ this.state.entity} src={this.state.avatarURL} className='avatar-medium' />
+			<img title={this.state.name +' - '+ this.state.entity} src={this.state.avatarURL} className={this.props.className} />
 		);
 	}
 });

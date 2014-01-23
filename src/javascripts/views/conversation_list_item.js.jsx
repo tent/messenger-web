@@ -40,8 +40,8 @@ Messenger.Views.ConversationListItem = React.createClass({
 		entities = entities.slice(0, 4);
 
 		var avatarNode = (
-			<span key={entities[0]} className='pull-left'>
-				<ContactAvatar entity={entities[0]} />
+			<span key={entities[0]} className='pull-left avatar-container'>
+				<ContactAvatar entity={entities[0]} className='avatar-medium' />
 			</span>
 		);
 

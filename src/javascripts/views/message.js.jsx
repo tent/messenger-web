@@ -11,8 +11,8 @@ Messenger.Views.Message = React.createClass({
 
 		return (
 			<div>
-				<span className='pull-left'>
-					<ContactAvatar entity={this.props.message.get('entity')} />
+				<span className='pull-left avatar-container'>
+					<ContactAvatar entity={this.props.message.get('entity')} className='avatar-medium' />
 				</span>
 				<div className='pull-right'>
 					<small>
