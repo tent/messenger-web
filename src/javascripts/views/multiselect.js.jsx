@@ -63,7 +63,9 @@
 			}
 
 			if (e.keyCode === 8 && this.refs.input.getDOMNode().selectionStart === 0) { // Backspace
-				if (this.state.selectedIndex !== null) {
+				if (this.state.selectableItems.length > 0) {
+					this.setState({ selectableItems: [] });
+				} else if (this.state.selectedIndex !== null) {
 					this.removeAtIndex(this.state.selectedIndex);
 				} else {
 					this.setState({
