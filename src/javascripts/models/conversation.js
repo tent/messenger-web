@@ -24,7 +24,7 @@
 		},
 
 		initNewMessage: function (entity) {
-			this.newMessage = Messenger.Models.Message.findOrInit({
+			this.newMessage = new Messenger.Models.Message({
 				id: 'new',
 				entity: this.entity
 			});
