@@ -48,13 +48,13 @@
 
 		handleChangeConversationID: function () {
 			var conversation = Messenger.Models.Conversation.find({ cid: this.conversationCID });
-			this.refs = [{ post: conversation.id }];
-			this.mentions = [{ post: conversation.id }].concat(conversation.mentions);
+			this.refs = [{ post: conversation.id, entity: conversation.entity }];
+			this.mentions = [{ post: conversation.id, entity: conversation.entity }].concat(conversation.mentions);
 		},
 
 		handleChangeConversationMentions: function () {
 			var conversation = Messenger.Models.Conversation.find({ cid: this.conversationCID });
-			this.mentions = [{ post: conversation.id }].concat(conversation.mentions);
+			this.mentions = [{ post: conversation.id, entity: conversation.entity }].concat(conversation.mentions);
 		},
 
 		save: function (options) {
