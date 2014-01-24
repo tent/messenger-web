@@ -5,12 +5,20 @@
 
 		modelName: 'message',
 
-		cidMappingScope: ['id', 'entity'],
+		cidMappingScope: ['id', 'entity', 'conversation_id'],
 
 		didInitialize: function () {
 			this.set('type', this.type || Messenger.config.POST_TYPES.MESSAGE);
 
 			this.findLoadedConversation();
+		},
+
+		parseAttributes: function (attrs) {
+			if (attrs.id !== 'new' && attrs.refs && attrs.refs.length && attrs.refs[0].post) {
+				this.set('conversation_id', attrs.refs[0].post);
+			}
+
+			this.constructor.__super__.parseAttributes.apply(this, arguments);
 		},
 
 		findLoadedConversation: function () {
@@ -34,6 +42,8 @@
 				conversation.once('change:id', this.handleChangeConversationID, this);
 			}
 
+			this.set('conversation_id', conversation.id);
+
 			conversation.on('change:mentions', this.handleChangeConversationMentions, this);
 
 			if (this.id !== 'new') {
@@ -48,6 +58,7 @@
 
 		handleChangeConversationID: function () {
 			var conversation = Messenger.Models.Conversation.find({ cid: this.conversationCID });
+			this.set('conversation_id', conversation.id);
 			this.refs = [{ post: conversation.id, entity: conversation.entity }];
 			this.mentions = [{ post: conversation.id, entity: conversation.entity }].concat(conversation.mentions);
 		},

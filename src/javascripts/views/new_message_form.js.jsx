@@ -5,13 +5,16 @@ Messenger.Views.NewMessageForm = React.createClass({
 
 	getInitialState: function () {
 		return {
-			message: new Messenger.Models.Message({
-				id: 'new',
-				entity: Messenger.current_entity
-			}),
+			message: null,
 			error: null,
 			submitting: false
 		};
+	},
+
+	componentWillMount: function () {
+		this.setState({
+			message: this.props.conversation.newMessage
+		});
 	},
 
 	handleSubmit: function (e) {
@@ -39,9 +42,13 @@ Messenger.Views.NewMessageForm = React.createClass({
 	handleSubmitSuccess: function () {
 		this.props.conversation.messages.prependModels([this.state.message]);
 
+		this.props.conversation.initNewMessage();
+
 		// reset form
 		this.refs.body.getDOMNode().value = '';
-		this.replaceState(this.getInitialState());
+		var state = this.getInitialState();
+		state.message = this.props.conversation.newMessage;
+		this.replaceState(state);
 	},
 
 	handleSubmitFailure: function (res, xhr) {
