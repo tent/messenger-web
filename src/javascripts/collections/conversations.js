@@ -3,5 +3,14 @@ Messenger.Collections.Conversations = Boiler.Collections.PostsFeed.createClass({
 
 	collectionName: 'conversations',
 
-	model: Messenger.Models.Conversation
+	model: Messenger.Models.Conversation,
+
+	detach: function () {
+		if (this.modelCIDs) {
+			this.modelCIDs.forEach(function (cid) {
+				this.constructor.model.detach(cid);
+			}.bind(this));
+		}
+		this.constructor.__super__.detach.apply(this, arguments);
+	}
 });
