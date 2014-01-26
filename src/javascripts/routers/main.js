@@ -42,6 +42,10 @@
 				}),
 				Messenger.config.container_el
 			);
+
+			Marbles.history.once('handler:before', function () {
+				conversation.detach();
+			}, this);
 		},
 
 		conversations: function (params) {
