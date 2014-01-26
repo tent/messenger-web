@@ -1,9 +1,12 @@
 Messenger.Collections.Conversations = Boiler.Collections.PostsFeed.createClass({
 	displayName: 'Messenger.Collections.Conversations',
 
-	collectionName: 'conversations',
-
-	model: Messenger.Models.Conversation,
+	mixins: [{
+		ctor: {
+			collectionName: 'conversations',
+			model: Messenger.Models.Conversation,
+		}
+	}],
 
 	detach: function () {
 		if (this.modelCIDs) {
