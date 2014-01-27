@@ -55,7 +55,8 @@
 						return component.state.selectedValues.indexOf(item.value) === -1;
 					});
 					component.setState({
-						selectableItems: matchedItems
+						selectableItems: matchedItems,
+						selectableIndex: 0
 					});
 				});
 			}, 50);
