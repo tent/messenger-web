@@ -116,6 +116,11 @@
 			}
 		},
 
+		hidePicker: function () {
+			this.refs.input.getDOMNode().value = "";
+			this.setState({ selectableItems: [] });
+		},
+
 		moveCursorDown: function () {
 			var index = Math.min(this.state.selectableItems.length-1, this.state.selectableIndex + 1);
 			this.setSelectableIndex(index, true);

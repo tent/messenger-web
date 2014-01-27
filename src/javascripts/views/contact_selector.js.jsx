@@ -53,10 +53,15 @@ Messenger.Views.ContactSelector = React.createClass({
 		}
 	},
 
+	hidePicker: function () {
+		this.refs.multiselect.hidePicker();
+	},
+
 	render: function () {
 		var Multiselect = Messenger.Views.Multiselect;
 		return (
 			<Multiselect
+				ref="multiselect"
 				selectedValues={this.props.selectedEntities}
 				itemLookup={this.findContact}
 				itemFuzzyLookup={this.searchContacts}

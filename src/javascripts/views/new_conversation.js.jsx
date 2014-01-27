@@ -30,6 +30,10 @@
 			this.props.conversation.newMessage.set('content.text', messageBody);
 		},
 
+		handleBodyFocus: function () {
+			this.refs.participantsSelector.hidePicker();
+		},
+
 		handleSubmitSuccess: function (res, xhr) {
 			this.props.handleSubmitSuccess(res, xhr);
 		},
@@ -80,10 +84,10 @@
 
 					<label>
 						To:<br/>
-						<ContactSelector handleChangeSelection={this.handleChangeContactSelection} selectedEntities={this.getRecipients()} />
+						<ContactSelector ref='participantsSelector' handleChangeSelection={this.handleChangeContactSelection} selectedEntities={this.getRecipients()} />
 					</label>
 
-					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} defaultValue={this.getBody()} />
+					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} onFocus={this.handleBodyFocus} defaultValue={this.getBody()} />
 
 					<div className='clearfix'>
 						<button type='submit' disabled={this.state.submitting} className='btn btn-primary pull-right'>{this.state.submitting ? 'Sending' : 'Send'}</button>
