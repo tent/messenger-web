@@ -38,6 +38,8 @@
 		handleInputChange: function () {
 			var value = this.refs.input.getDOMNode().value.trim();
 
+			this.adjustInputSize();
+
 			if (value.length === 0) {
 				this.setState({
 					selectableItems: []
@@ -178,6 +180,14 @@
 			this.props.handleChangeSelection(values);
 		},
 
+		adjustInputSize: function () {
+			var input = this.refs.input.getDOMNode(),
+					container = this.refs.inputContainer.getDOMNode(),
+					maxWidth = parseInt(window.getComputedStyle(container).width);
+			input.style.setProperty('width', '20px');
+			input.style.setProperty('width', Math.min(input.scrollWidth, maxWidth) +'px');
+		},
+
 		render: function () {
 			var selectedItems = [];
 			var selectableItems = [];
@@ -209,7 +219,7 @@
 			}
 			return (
 				<div className='multiselect-container'>
-					<ul className='unstyled m-input'>
+					<ul className='unstyled m-input' ref='inputContainer'>
 						{selectedItems}
 						<li className='input'>
 							<input ref='input' type='text' onChange={this.handleInputChange} onKeyDown={this.handleInputKeyDown} />
