@@ -13,6 +13,7 @@
 	Contacts.__callbackBindings = {};
 
 	Contacts.__listeners = {};
+	Contacts.__listenerIDMapping = {};
 
 	// list of requests created before daemon activated.
 	Contacts.sendQueue = [];
@@ -149,11 +150,12 @@
 	};
 
 	Contacts.onChange = function (entity, callback, thisArg) {
-		listeners = Contacts.__listeners;
-		listeners[entity] = listeners[entity] || [];
+		var _listeners = Contacts.__listeners,
+				_listenerIDMapping = Contacts.__listenerIDMapping;
+		_listeners[entity] = _listeners[entity] || [];
 
 		var id = null;
-		var _ref = listeners[entity];
+		var _ref = _listeners[entity];
 		if (typeof _ref.__id_counter !== 'number') {
 			_ref.__id_counter = 0;
 		}
@@ -172,12 +174,31 @@
 			});
 		}
 
+		_listenerIDMapping[id] = entity;
+
 		Contacts.sendMessage('onChange', [id, entity], callback, thisArg);
 		return id;
 	};
 
 	Contacts.offChange = function (id, callback, thisArg) {
+		var _listeners = Contacts.__listeners,
+				_entity = Contacts.__listenerIDMapping[id],
+				_entityListeners = (_listeners[_entity] || []),
+				_tmp, i, _len;
+
 		Contacts.sendMessage('offChange', [id], callback || null, thisArg);
+
+		_tmp = [];
+		for (i = 0, _len = _entityListeners.length; i < _len; i++) {
+			if (_entityListeners[i].id !== id) {
+				_tmp.push( _entityListeners[i] );
+			}
+		}
+		_listeners[_entity] = _tmp;
+
+		if (_tmp.length === 0) {
+			delete _listeners[_entity];
+		}
 	};
 
 })();
