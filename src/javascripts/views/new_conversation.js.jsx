@@ -11,14 +11,18 @@
 			};
 		},
 
-		handleSubmit: function (e) {
-			e.preventDefault();
+		performSubmit: function () {
 			this.setState({ submitting: true });
 			this.props.conversation.shouldSaveNewMessage = true;
 			this.props.conversation.save({
 				success: this.handleSubmitSuccess,
 				failure: this.handleSubmitFailure
 			});
+		},
+
+		handleSubmit: function (e) {
+			e.preventDefault();
+			this.performSubmit();
 		},
 
 		handleChangeContactSelection: function (entities) {
@@ -32,6 +36,14 @@
 
 		handleBodyFocus: function () {
 			this.refs.participantsSelector.hidePicker();
+		},
+
+		handleKeyDown: function (e) {
+			if ((e.ctrlKey || e.metaKey) && e.keyCode === 13) { // ctrl/cmd + enter/return
+				e.preventDefault();
+				this.performSubmit();
+				return false;
+			}
 		},
 
 		handleSubmitSuccess: function (res, xhr) {
@@ -91,11 +103,20 @@
 						<ContactSelector
 							ref='participantsSelector'
 							handleChangeSelection={this.handleChangeContactSelection}
+							handleKeyDown={this.handleKeyDown}
 							selectedEntities={this.getRecipients()}
 							focusNextInput={this.focusBody}/>
 					</label>
 
-					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} onFocus={this.handleBodyFocus} defaultValue={this.getBody()} />
+					<textarea
+						ref='body'
+						className='bb'
+						placeholder='Message Body'
+						rows='3'
+						onChange={this.handleChangeBody}
+						onFocus={this.handleBodyFocus}
+						onKeyDown={this.handleKeyDown}
+						defaultValue={this.getBody()} />
 
 					<div className='clearfix'>
 						<button type='submit' disabled={this.state.submitting} className='btn btn-primary pull-right'>{this.state.submitting ? 'Sending' : 'Send'}</button>

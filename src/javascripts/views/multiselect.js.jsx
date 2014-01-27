@@ -63,6 +63,8 @@
 		},
 
 		handleInputKeyDown: function (e) {
+			var _tmp;
+
 			if (e.keyCode === 13) { // Enter / Return
 				e.preventDefault();
 				this.selectActiveItem();
@@ -71,6 +73,14 @@
 			if (e.keyCode === 9 && this.props.focusNextInput) { // Tab
 				e.preventDefault();
 				this.props.focusNextInput();
+				return;
+			}
+
+			if (this.props.handleKeyDown) {
+				_tmp = this.props.handleKeyDown(e);
+				if (_tmp !== undefined) {
+					return _tmp;
+				}
 			}
 
 			if (e.keyCode === 8 && this.refs.input.getDOMNode().selectionStart === 0) { // Backspace
