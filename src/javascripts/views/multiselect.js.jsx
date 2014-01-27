@@ -116,18 +116,17 @@
 		},
 
 		moveCursorDown: function () {
-			this.setState({
-				selectableIndex: Math.min(this.state.selectableItems.length-1, this.state.selectableIndex + 1)
-			});
+			var index = Math.min(this.state.selectableItems.length-1, this.state.selectableIndex + 1);
+			this.setSelectableIndex(index, true);
 		},
 
 		moveCursorUp: function () {
-			this.setState({
-				selectableIndex: Math.max(0, this.state.selectableIndex - 1)
-			});
+			var index = Math.max(0, this.state.selectableIndex - 1);
+			this.setSelectableIndex(index, true);
 		},
 
-		setSelectableIndex: function (index) {
+		setSelectableIndex: function (index, scroll) {
+			this.__scrollToSelectableIndex = !!scroll;
 			this.setState({
 				selectableIndex: index
 			});
@@ -212,6 +211,7 @@
 						displayText={_ref[i].displayText}
 						displayImageURL={_ref[i].displayImageURL}
 						active={this.state.selectableIndex === i}
+						scrollIntoView={this.__scrollToSelectableIndex === true && this.state.selectableIndex === i}
 						index={i}
 						setActive={this.setSelectableIndex}
 						select={this.selectAtIndex} />
@@ -268,6 +268,14 @@
 			this.props.select(this.props.index);
 		},
 
+		componentDidUpdate: function () {
+			var el;
+			if (this.props.scrollIntoView) {
+				el = this.refs.el.getDOMNode();
+				el.parentNode.scrollTop = Math.max(0, el.offsetTop - el.offsetHeight);
+			}
+		},
+
 		render: function () {
 			var displayValue = '';
 			if (this.props.value !== this.props.displayText) {
@@ -280,7 +288,7 @@
 			}
 
 			return (
-				<li className={this.props.active ? 'active' : ''} onMouseEnter={this.handleMouseEnter} onClick={this.handleClick}>
+				<li className={this.props.active ? 'active' : ''} onMouseEnter={this.handleMouseEnter} onClick={this.handleClick} ref='el'>
 					{displayImage}
 					<span className='text'>{this.props.displayText}</span>
 					<span className='value'>{displayValue}</span>
