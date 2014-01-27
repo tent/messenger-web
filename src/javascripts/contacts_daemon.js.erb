@@ -221,16 +221,18 @@
 	Contacts.cacheProfile = function (entity, name, avatarDigest) {
 		var profile = Contacts.cache.get(entity);
 		var newProfile = {
-			name: name,
-			avatarDigest: avatarDigest
+			name: name
 		};
+		if (avatarDigest) {
+			newProfile.avatarDigest = avatarDigest;
+		}
 		Contacts.cache.set(entity, newProfile);
 
 		var manifest = Contacts.getCacheManifest() || {};
 		manifest[entity] = name;
 		Contacts.cache.set('manifest', manifest);
 
-		if (!profile || (profile.name !== newProfile.name && profile.avatarDigest !== newProfile.avatarDigest)) {
+		if (!profile || profile.name !== newProfile.name || profile.avatarDigest !== newProfile.avatarDigest) {
 			Contacts.profileChanged(entity, newProfile, profile);
 		}
 	};
