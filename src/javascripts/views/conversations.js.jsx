@@ -71,6 +71,7 @@ Messenger.Views.Conversations = React.createClass({
 	},
 
 	handleNewConversationCreated: function () {
+		this.props.handleNewConversationCreated(this.state.newConversation);
 		this.setNewConversation();
 	},
 

@@ -62,6 +62,9 @@
 					conversations: conversations,
 					openConversation: function (conversation) {
 						Marbles.history.navigate('conversations/'+ encodeURIComponent(conversation.entity) +'/'+ encodeURIComponent(conversation.id));
+					},
+					handleNewConversationCreated: function (conversation) {
+						conversations.prependModels([conversation]);
 					}
 				}),
 				Messenger.config.container_el
