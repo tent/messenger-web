@@ -65,7 +65,8 @@ Messenger.Views.ContactSelector = React.createClass({
 				selectedValues={this.props.selectedEntities}
 				itemLookup={this.findContact}
 				itemFuzzyLookup={this.searchContacts}
-				handleChangeSelection={this.props.handleChangeSelection} />
+				handleChangeSelection={this.props.handleChangeSelection}
+				focusNextInput={this.props.focusNextInput} />
 		);
 	}
 });

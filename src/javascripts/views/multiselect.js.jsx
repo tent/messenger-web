@@ -68,6 +68,11 @@
 				this.selectActiveItem();
 			}
 
+			if (e.keyCode === 9 && this.props.focusNextInput) { // Tab
+				e.preventDefault();
+				this.props.focusNextInput();
+			}
+
 			if (e.keyCode === 8 && this.refs.input.getDOMNode().selectionStart === 0) { // Backspace
 				if (this.state.selectableItems.length > 0) {
 					this.setState({ selectableItems: [] });

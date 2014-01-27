@@ -62,6 +62,10 @@
 			return this.props.conversation.get('newMessage.content.text');
 		},
 
+		focusBody: function () {
+			this.refs.body.getDOMNode().focus();
+		},
+
 		clearAlert: function () {
 			this.setState({ alert: null });
 		},
@@ -84,7 +88,11 @@
 
 					<label>
 						To:<br/>
-						<ContactSelector ref='participantsSelector' handleChangeSelection={this.handleChangeContactSelection} selectedEntities={this.getRecipients()} />
+						<ContactSelector
+							ref='participantsSelector'
+							handleChangeSelection={this.handleChangeContactSelection}
+							selectedEntities={this.getRecipients()}
+							focusNextInput={this.focusBody}/>
 					</label>
 
 					<textarea ref='body' className='bb' placeholder='Message Body' rows='3' onChange={this.handleChangeBody} onFocus={this.handleBodyFocus} defaultValue={this.getBody()} />
