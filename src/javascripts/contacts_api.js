@@ -14,6 +14,7 @@
 
 	Contacts.__listeners = {};
 	Contacts.__listenerIDMapping = {};
+	Contacts.__listenerIDCounter = 0;
 
 	// list of requests created before daemon activated.
 	Contacts.sendQueue = [];
@@ -156,9 +157,6 @@
 
 		var id = null;
 		var _ref = _listeners[entity];
-		if (typeof _ref.__id_counter !== 'number') {
-			_ref.__id_counter = 0;
-		}
 		for (var i = 0, _len = _ref.length; i < _len; i++) {
 			if (_ref[i].callback === callback && _ref[i].thisArg === thisArg) {
 				id = _ref[i].id;
@@ -166,7 +164,7 @@
 			}
 		}
 		if (id === null) {
-			id = _ref.__id_counter++;
+			id = Contacts.__listenerIDCounter++;
 			_ref.push({
 				id: id,
 				callback: callback,
