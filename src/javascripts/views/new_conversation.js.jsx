@@ -31,13 +31,6 @@
 		},
 
 		handleSubmitSuccess: function (res, xhr) {
-			this.setState({
-				alert: {
-					type: 'success',
-					text: 'Message sent'
-				},
-				submitting: false
-			});
 			this.props.handleSubmitSuccess(res, xhr);
 		},
 
