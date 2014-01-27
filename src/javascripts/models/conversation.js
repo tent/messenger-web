@@ -66,12 +66,13 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 		if (this.id === 'new') {
 			this.once('change:id', this.initMessages, this);
 		}
+
+		this.once('detach', this.handleDetach, this);
 	},
 
-	detach: function () {
+	handleDetach: function () {
 		this.messages.detach();
 		this.newMessage.detach();
-		this.constructor.__super__.detach.apply(this, arguments);
 	},
 
 	initNewMessage: function (entity) {
