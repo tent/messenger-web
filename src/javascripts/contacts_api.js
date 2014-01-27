@@ -3,8 +3,6 @@
 	var Contacts = window.TentContacts = {};
 	Contacts.displayName = "window.TentContacts";
 
-	// TODO: configure Contacts.daemonURL
-
 	Contacts.ready = false;
 
 	Contacts.__id_counter = 0;

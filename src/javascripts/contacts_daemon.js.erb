@@ -56,7 +56,7 @@
 	var __listeners = {};
 	var __listenersMapping = {};
 
-	Contacts.allowedOrigin = /^.*$/; // TODO: make this configurable with an array of hostnames
+	Contacts.allowedOrigin = /<%= ENV['CONTACTS_ALLOWED_ORIGIN'] || '^.+$' %>/;
 
 	// listen to postMessage
 	Contacts.run = function () {
