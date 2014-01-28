@@ -21,7 +21,7 @@ module Messenger
           https://tent.io/types/message/v0
         )
       },
-      :assets_dir => File.join(project_root, 'public'),
+      :assets_dir => ENV['ASSETS_DIR'] || File.join(project_root, 'public'),
       :asset_roots => [
         File.join(project_root, 'src')
       ].concat(contacts_service_api_roots),
