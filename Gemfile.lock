@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/cupcake/contacts-service.git
-  revision: eb92a443479feb4d6f1fe4cde15014025a56dba2
+  revision: 39d988b3baee63e4b240c3019a32faa3c4dff98d
   branch: master
   specs:
     contacts-service (0.0.1)
