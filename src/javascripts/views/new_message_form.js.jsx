@@ -17,9 +17,7 @@ Messenger.Views.NewMessageForm = React.createClass({
 		});
 	},
 
-	handleSubmit: function (e) {
-		e.preventDefault();
-
+	performSubmit: function () {
 		this.setState({submitting: true});
 
 		var conversation = this.props.conversation;
@@ -37,6 +35,11 @@ Messenger.Views.NewMessageForm = React.createClass({
 			success: this.handleSubmitSuccess,
 			failure: this.handleSubmitFailure
 		});
+	},
+
+	handleSubmit: function (e) {
+		e.preventDefault();
+		this.performSubmit();
 	},
 
 	handleSubmitSuccess: function () {
@@ -63,6 +66,13 @@ Messenger.Views.NewMessageForm = React.createClass({
 		this.state.message.set('content.text', messageBody);
 	},
 
+	handleKeyDown: function (e) {
+		if ((e.ctrlKey || e.metaKey) && e.keyCode === 13) { // ctrl/cmd + enter/return
+			e.preventDefault();
+			this.performSubmit();
+		}
+	},
+
 	render: function () {
 		var alertNode = '';
 		if (this.state.error) {
@@ -83,6 +93,7 @@ Messenger.Views.NewMessageForm = React.createClass({
 					placeholder='Message Body'
 					rows='3'
 					onChange={this.handleChangeBody}
+					onKeyDown={this.handleKeyDown}
 					defaultValue={this.state.message.get('content.text') || ''} />
 
 				<button type='submit' disabled={this.state.submitting} className='btn btn-primary pull-right'>{this.state.submitting ? 'Sending' : 'Send'}</button>
