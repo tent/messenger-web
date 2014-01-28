@@ -70,7 +70,7 @@
 				this.selectActiveItem();
 			}
 
-			if (e.keyCode === 9 && this.props.focusNextInput) { // Tab
+			if (e.keyCode === 9 && !e.shiftKey && this.props.focusNextInput) { // Tab
 				e.preventDefault();
 				this.props.focusNextInput();
 				return;
