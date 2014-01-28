@@ -1,9 +1,13 @@
+require 'contacts-service'
+
 module Messenger
   def self.project_root
     @project_root ||= File.expand_path(File.dirname(__FILE__))
   end
 
   def self.boiler_config
+    ContactsService.configure
+    contacts_service_api_roots = ContactsService.settings[:asset_paths]
     {
       :tent_app => {
         :name => 'Messenger-Web',
@@ -20,20 +24,17 @@ module Messenger
       :assets_dir => File.join(project_root, 'public'),
       :asset_roots => [
         File.join(project_root, 'src')
-      ],
+      ].concat(contacts_service_api_roots),
       :asset_names => %w(
         application.css
         application.js
         tent-client.js
-        contacts_daemon.js
+        contacts_api.js
       ),
       :layout_roots => [
         File.join(project_root, 'layout')
       ],
       :layouts => [{
-        :name => :contacts_daemon,
-        :route => '/contacts-daemon'
-      }, {
         :name => :messenger,
         :route => '/*'
       }],

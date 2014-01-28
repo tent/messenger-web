@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/cupcake/boiler-web.git
-  revision: 64cd47c2560c388f556fe001381e53fb6bf0e11f
+  revision: 33bffa3d430ccde94592b35423a163ca430b0dcd
   branch: master
   specs:
     cupcake-boiler-web (0.0.1)
@@ -18,6 +18,13 @@ GIT
       tent-client
       tilt (~> 1.4.0)
       yajl-ruby
+
+GIT
+  remote: git://github.com/cupcake/contacts-service.git
+  revision: eb92a443479feb4d6f1fe4cde15014025a56dba2
+  branch: master
+  specs:
+    contacts-service (0.0.1)
 
 GIT
   remote: git://github.com/jvaill/sprockets.git
@@ -187,6 +194,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  contacts-service!
   cupcake-boiler-web!
   hawk-auth!
   icing!

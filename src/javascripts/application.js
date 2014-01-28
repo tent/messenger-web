@@ -1,4 +1,3 @@
-//= require ./contacts_api
 //= require ./messenger
 //= require_self
 

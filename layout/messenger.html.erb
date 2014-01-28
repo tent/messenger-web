@@ -1,1 +1,22 @@
-<%= erb 'application' %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= erb :meta %>
+
+    <%= erb :title %>
+
+    <%= erb :stylesheets %>
+  </head>
+
+  <body>
+    <%= erb :nav %>
+
+    <div id='main-container' class='container'>
+      <div id='main' class='pull-left'>
+      </div>
+    </div>
+
+    <script type='application/javascript' src='<%= asset_path('contacts_api.js') %>'></script>
+    <%= erb :javascripts %>
+  </body>
+</html>
