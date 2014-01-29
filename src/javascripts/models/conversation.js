@@ -270,7 +270,7 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 		};
 
 		var handleFetchSuccess = function () {
-				models = this.messages.models();
+				var models = this.messages.models();
 				if (models.length === 0) {
 					return handleFetchComplete();
 				}

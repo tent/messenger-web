@@ -44,6 +44,7 @@ Messenger.Models.Message = Marbles.Model.createClass({
 
 	findLoadedConversation: function () {
 		var _conversationType = Messenger.config.POST_TYPES.CONVERSATION;
+		var conversation;
 		for (var i = 0, _refs = this.refs || [], _len = _refs.length; i < _len; i++) {
 			conversation = Messenger.Models.Conversation.find({
 				id: _refs[i].post,
