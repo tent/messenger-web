@@ -11,7 +11,7 @@
 }
 
 .conversations, .conversation {
-	> li {
+	> li, > li .message {
 		display: block;
 		padding: 1em;
 		border-bottom: 1px solid $gray;
@@ -24,15 +24,6 @@
 		h3 {
 			font-size: 1em;
 			margin: 0px;
-		}
-	}
-}
-
-.conversations {
-	> li {
-		&:hover {
-			cursor: pointer;
-			background-color: $gray;
 		}
 
 		&.deleting {
@@ -50,6 +41,15 @@
 
 		transition-property: opacity;
 		transition-duration: 2s;
+	}
+}
+
+.conversations {
+	> li {
+		&:hover {
+			cursor: pointer;
+			background-color: $gray;
+		}
 	}
 }
 
