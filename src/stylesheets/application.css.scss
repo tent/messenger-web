@@ -30,10 +30,26 @@
 
 .conversations {
 	> li {
-		cursor: pointer;
 		&:hover {
+			cursor: pointer;
 			background-color: $gray;
 		}
+
+		&.deleting {
+			opacity: 0.4;
+			&:hover {
+				cursor: wait;
+				background-color: inherit;
+			}
+		}
+
+		&.delete-failed {
+			transition-property: background;
+			background-color: transparentize(red, 0.70);
+		}
+
+		transition-property: opacity;
+		transition-duration: 2s;
 	}
 }
 

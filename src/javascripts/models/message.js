@@ -139,5 +139,25 @@ Messenger.Models.Message = Marbles.Model.createClass({
 			return "Message has no content.";
 		}
 		return null;
+	},
+
+	performDelete: function (callback) {
+		Messenger.client.deletePost({
+			params: [{
+				entity: this.entity,
+				post: this.id
+			}],
+			callback: {
+				success: function () {
+					this.detach();
+					if (typeof callback.success === 'function') {
+						callback.success();
+					}
+				}.bind(this),
+
+				failure: callback.failure,
+				complete: callback.complete
+			}
+		});
 	}
 });

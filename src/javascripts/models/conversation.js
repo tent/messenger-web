@@ -210,6 +210,115 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 		return null;
 	},
 
+	performDelete: function (callback) {
+		var performDeleteConversation = function () {
+			Messenger.client.deletePost({
+				params: [{
+					entity: this.entity,
+					post: this.id
+				}],
+
+				callback: {
+					success: function (res, xhr) {
+						this.detach();
+						if (typeof callback.success === 'function') {
+							callback.success();
+						}
+					}.bind(this),
+
+					failure: callback.failure
+				}
+			});
+		}.bind(this);
+
+		this.__deleteMessages({
+			success: performDeleteConversation,
+			failure: callback.failure
+		});
+	},
+
+	__deleteMessages: function (callback) {
+		var fetchComplete = false;
+		var numRemaining = 0;
+		var numFailed = 0;
+
+		var handleComplete = function () {
+			if (fetchComplete && numRemaining === 0 && numFailed === 0) {
+				callback.success();
+			}
+		};
+
+		var handleDeleteSuccess = function () {
+			numRemaining--;
+
+			handleComplete();
+		}.bind(this);
+
+		var handleDeleteFailure = function (res, xhr) {
+			numRemaining--;
+			numFailed++;
+
+			callback.failure(res, xhr);
+			handleComplete();
+		}.bind(this);
+
+		var deleteMessage = function (message) {
+			message.performDelete({
+				success: handleDeleteSuccess,
+				failure: handleDeleteFailure
+			});
+		};
+
+		var handleFetchSuccess = function () {
+				models = this.messages.models();
+				if (models.length === 0) {
+					return handleFetchComplete();
+				}
+
+				var len = models.length;
+
+				numRemaining += len;
+
+				for (var i = 0; i < len; i++) {
+					deleteMessage(models[i]);
+				}
+
+				fetchNextPage();
+		}.bind(this);
+
+		var handleFetchComplete = function () {
+			fetchComplete = true;
+			handleComplete();
+		}.bind(this);
+
+		var fetchNextPage = function () {
+			var lastPage = !this.messages.fetchNext({
+				callback: {
+					success: handleFetchSuccess,
+					failure: callback.failure
+				}
+			});
+
+			if (lastPage) {
+				handleFetchComplete();
+			}
+		}.bind(this);
+
+		this.__fetchOwnedMessages({
+			success: handleFetchSuccess,
+			failure: callback.failure
+		});
+	},
+
+	__fetchOwnedMessages: function (callback) {
+		this.messages.fetch({
+			params: {
+				entities: this.entity
+			},
+			callback: callback
+		});
+	},
+
 	fetch: function (options) {
 		var conversation = this;
 		var opts = Marbles.Utils.extend({}, options || {}, {

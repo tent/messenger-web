@@ -3,8 +3,59 @@
 Messenger.Views.ConversationListItem = React.createClass({
 	displayName: 'Messenger.Views.ConversationListItem',
 
+	getInitialState: function () {
+		return {
+			active: false,
+			deleting: false,
+			deleteFailed: false
+		};
+	},
+
 	handleClick: function () {
+		if (this.state.deleting) {
+			return false;
+		}
+
 		this.props.openConversation(this.props.conversation);
+	},
+
+	handleDeleteClick: function (e) {
+		e.preventDefault();
+
+		if (confirm("Delete conversation (and all messages owned within)?")) {
+			var conversation = this.props.conversation;
+
+			this.setState({
+				deleting: true
+			});
+
+			this.props.conversation.performDelete({
+				failure: function (res, xhr) {
+					this.setState({
+						deleting: false,
+						deleteFailed: true
+					});
+
+					setTimeout(function () {
+						throw Error(this.constructor.displayName +": failed to delete Conversation("+ JSON.stringify(conversation.entity) +", "+ JSON.stringify(conversation.id) +"): "+ xhr.status +" "+ JSON.stringify(res));
+					}.bind(this), 0);
+				}.bind(this)
+			});
+		}
+
+		return false;
+	},
+
+	handleMouseEnter: function () {
+		this.setState({
+			active: true
+		});
+	},
+
+	handleMouseLeave: function () {
+		this.setState({
+			active: false
+		});
 	},
 
 	render: function () {
@@ -17,11 +68,20 @@ Messenger.Views.ConversationListItem = React.createClass({
 		var conversation = this.props.conversation;
 		var latestMessage = conversation.messages.first();
 		var messageNode;
+
+		var deleteBtn;
+		if (this.state.active && !this.state.deleting && !this.state.deleteFailed && conversation.entity === Messenger.current_entity) {
+			deleteBtn = <button className='btn btn-danger' title='Delete conversation' onClick={this.handleDeleteClick}>Delete</button>;
+		} else {
+			deleteBtn = '';
+		}
+
 		if (latestMessage) {
 			messageNode = <TruncatedMessage message={latestMessage} />;
 		} else {
 			return (
-				<li key={conversation.cid} className='clearfix' onClick={this.handleClick}>
+				<li key={conversation.cid} className='clearfix' onClick={this.handleClick} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} className={'clearfix'+ (this.state.deleting ? ' deleting' : '') + (this.state.deleteFailed ? ' delete-failed' : '')}>
+					{deleteBtn}
 					<div className='pull-right timestamp'>
 						<small><RelativeTimestamp milliseconds={(latestMessage ? latestMessage.published_at : conversation.published_at)} /></small>
 					</div>
@@ -68,7 +128,7 @@ Messenger.Views.ConversationListItem = React.createClass({
 		}
 
 		return (
-			<li key={conversation.cid} className='clearfix' onClick={this.handleClick}>
+			<li key={conversation.cid} className='clearfix' onClick={this.handleClick} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} className={'clearfix'+ (this.state.deleting ? ' deleting' : '') + (this.state.deleteFailed ? ' delete-failed' : '')}>
 				{participants}
 
 				<div className='pull-right timestamp'>
@@ -76,6 +136,10 @@ Messenger.Views.ConversationListItem = React.createClass({
 				</div>
 
 				<h3>{nameNode}</h3>
+
+				<div className='pull-right'>
+					{deleteBtn}
+				</div>
 
 				{messageNode}
 			</li>
