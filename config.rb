@@ -10,7 +10,7 @@ module Messenger
     contacts_service_api_roots = ContactsService.settings[:asset_paths]
     {
       :tent_app => {
-        :name => 'Messenger-Web',
+        :name => ENV['APP_NAME'] || 'Messenger-Web',
         :description => 'Simple private messaging app',
         :display_url => 'https://github.com/cupcake/messenger-web',
         :read_types => %w(
