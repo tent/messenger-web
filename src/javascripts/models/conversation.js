@@ -304,17 +304,14 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 			}
 		}.bind(this);
 
-		this.__fetchOwnedMessages({
+		this.__fetchMessages({
 			success: handleFetchSuccess,
 			failure: callback.failure
 		});
 	},
 
-	__fetchOwnedMessages: function (callback) {
+	__fetchMessages: function (callback) {
 		this.messages.fetch({
-			params: {
-				entities: this.entity
-			},
 			callback: callback
 		});
 	},

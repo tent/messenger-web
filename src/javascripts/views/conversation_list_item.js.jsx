@@ -22,7 +22,7 @@ Messenger.Views.ConversationListItem = React.createClass({
 	handleDeleteClick: function (e) {
 		e.preventDefault();
 
-		if (confirm("Delete conversation (and all messages owned within)?")) {
+		if (confirm("Delete conversation (and all messages within)?")) {
 			var conversation = this.props.conversation;
 
 			this.setState({
@@ -70,7 +70,7 @@ Messenger.Views.ConversationListItem = React.createClass({
 		var messageNode;
 
 		var deleteBtn;
-		if (this.state.active && !this.state.deleting && !this.state.deleteFailed && conversation.entity === Messenger.current_entity) {
+		if (this.state.active && !this.state.deleting && !this.state.deleteFailed) {
 			deleteBtn = <button className='btn btn-danger' title='Delete conversation' onClick={this.handleDeleteClick}>Delete</button>;
 		} else {
 			deleteBtn = '';

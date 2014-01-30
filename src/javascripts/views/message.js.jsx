@@ -58,7 +58,7 @@ Messenger.Views.Message = React.createClass({
 
 		var deleteBtn;
 		var deleteBtn;
-		if (this.state.active && !this.state.deleting && !this.state.deleteFailed && message.entity === Messenger.current_entity) {
+		if (this.state.active && !this.state.deleting && !this.state.deleteFailed) {
 			deleteBtn = <button className='btn btn-danger' title='Delete conversation' onClick={this.handleDeleteClick}>Delete</button>;
 		} else {
 			deleteBtn = '';
