@@ -79,14 +79,7 @@ Messenger.Views.ConversationListItem = React.createClass({
 		if (latestMessage) {
 			messageNode = <TruncatedMessage message={latestMessage} />;
 		} else {
-			return (
-				<li key={conversation.cid} className='clearfix' onClick={this.handleClick} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} className={'clearfix'+ (this.state.deleting ? ' deleting' : '') + (this.state.deleteFailed ? ' delete-failed' : '')}>
-					{deleteBtn}
-					<div className='pull-right timestamp'>
-						<small><RelativeTimestamp milliseconds={(latestMessage ? latestMessage.published_at : conversation.published_at)} /></small>
-					</div>
-				</li>
-			);
+			messageNode = '';
 		}
 
 		var entities = (conversation.mentions || []).slice(0, 4).map(function (mention) {
@@ -110,7 +103,7 @@ Messenger.Views.ConversationListItem = React.createClass({
 		}
 
 		var nameNode = '';
-		if (entities.length) {
+		if (latestMessage && entities.length) {
 			nameNode = (<span>
 				<ContactName entity={latestMessage.entity === Messenger.current_entity ? entities[0] : latestMessage.entity} />{numOthersText}
 			</span>);
