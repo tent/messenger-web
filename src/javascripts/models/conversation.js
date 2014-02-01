@@ -403,7 +403,15 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 		if (!manifest.latestConversationMessage) {
 			manifest.latestConversationMessage = {};
 		}
-		manifest.latestConversationMessage[this.entity +':'+ this.id] = latestMessageMeta;
+
+		var key = this.entity +':'+ this.id;
+
+		var tmp = manifest.latestConversationMessage[key];
+		if (tmp) {
+			Messenger.LocalCache.removeItem(tmp.entity +':'+ tmp.id);
+		}
+
+		manifest.latestConversationMessage[key] = latestMessageMeta;
 		Messenger.LocalCache.setItem('manifest', manifest);
 	}
 });
