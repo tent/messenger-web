@@ -357,13 +357,13 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 
 		if (latestMessage) {
 			this.messages.resetModels([latestMessage]);
-		} else {
-			this.messages.fetch({
-				params: {
-					limit: 1
-				}
-			});
 		}
+
+		this.messages.fetch({
+			params: {
+				limit: 1
+			}
+		});
 	},
 
 	__getLatestCachedMessage: function () {
