@@ -95,6 +95,8 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 				mentions: this.entity +' '+ this.id
 			}
 		});
+
+		this.messages.on('change', this.__cacheLatestMessage, this);
 	},
 
 	setRecipients: function (entities) {
@@ -348,5 +350,60 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 			}
 		});
 		Messenger.client.getPost(opts);
+	},
+
+	fetchLatestMessage: function () {
+		var latestMessage = this.__getLatestCachedMessage();
+
+		if (latestMessage) {
+			this.messages.resetModels([latestMessage]);
+		} else {
+			this.messages.fetch({
+				params: {
+					limit: 1
+				}
+			});
+		}
+	},
+
+	__getLatestCachedMessage: function () {
+		var manifest = Messenger.LocalCache.getItem('manifest');
+		if (!manifest || !manifest.latestConversationMessage) {
+			return null;
+		}
+
+		var latestMessageMeta = manifest.latestConversationMessage[this.entity +':'+ this.id];
+		if (!latestMessageMeta) {
+			return null;
+		}
+
+		var latestMessageJSON = Messenger.LocalCache.getItem(latestMessageMeta.entity +':'+ latestMessageMeta.id);
+		if (!latestMessageJSON) {
+			return null;
+		}
+
+		return Messenger.Models.Message.findOrInit(latestMessageJSON);
+	},
+
+	__cacheLatestMessage: function () {
+		var latestMessage = this.messages.first();
+		if (!latestMessage) {
+			return;
+		}
+
+		var latestMessageJSON = latestMessage.toJSON();
+		var latestMessageMeta = {
+			entity: latestMessage.entity,
+			id: latestMessage.id
+		};
+
+		Messenger.LocalCache.setItem(latestMessage.entity +':'+ latestMessage.id, latestMessageJSON);
+
+		var manifest = Messenger.LocalCache.getItem('manifest') || {};
+		if (!manifest.latestConversationMessage) {
+			manifest.latestConversationMessage = {};
+		}
+		manifest.latestConversationMessage[this.entity +':'+ this.id] = latestMessageMeta;
+		Messenger.LocalCache.setItem('manifest', manifest);
 	}
 });

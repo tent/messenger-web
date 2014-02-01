@@ -1,5 +1,6 @@
 //= require_self
 //= require ./config
+//= require ./local_cache
 //= require_tree ./routers
 //= require_tree ./views
 //= require_tree ./models
