@@ -14,7 +14,8 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 				'entity',
 				'version',
 				'mentions',
-				'published_at'
+				'published_at',
+				'permissions'
 			],
 
 			findOrInit: function (attrs) {
@@ -60,6 +61,7 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 
 	didInitialize: function () {
 		this.set('type', this.type || Messenger.config.POST_TYPES.CONVERSATION);
+		this.set('permissions.public', false);
 		this.initNewMessage();
 		this.initMessages();
 
@@ -107,6 +109,7 @@ Messenger.Models.Conversation = Marbles.Model.createClass({
 			});
 		}
 		this.set('mentions', mentions);
+		this.set('permissions.entities', entities.concat(this.entity));
 	},
 
 	saveNewMessage: function (options) {

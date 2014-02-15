@@ -16,7 +16,8 @@ Messenger.Models.Message = Marbles.Model.createClass({
 				'mentions',
 				'refs',
 				'content',
-				'published_at'
+				'published_at',
+				'permissions'
 			],
 
 			findOrInit: function (attrs) {
@@ -30,6 +31,7 @@ Messenger.Models.Message = Marbles.Model.createClass({
 
 	didInitialize: function () {
 		this.set('type', this.type || Messenger.config.POST_TYPES.MESSAGE);
+		this.set('permissions.public', false);
 
 		this.findLoadedConversation();
 	},
@@ -88,6 +90,7 @@ Messenger.Models.Message = Marbles.Model.createClass({
 	handleChangeConversationMentions: function () {
 		var conversation = Messenger.Models.Conversation.find({ cid: this.conversationCID });
 		this.mentions = [{ post: conversation.id, entity: conversation.entity }].concat(conversation.mentions);
+		this.permissions = conversation.permissions;
 	},
 
 	save: function (options) {
