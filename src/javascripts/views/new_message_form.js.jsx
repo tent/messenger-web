@@ -30,6 +30,7 @@ Messenger.Views.NewMessageForm = React.createClass({
 			post: conversation.id,
 			entity: conversation.entity
 		}].concat(conversation.mentions));
+		this.state.message.set('permissions', conversation.permissions);
 
 		this.state.message.save({
 			success: this.handleSubmitSuccess,
